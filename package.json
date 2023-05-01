@@ -4,27 +4,28 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "npm run serve:prod",
-      "gulp": "node ./node_modules/gulp/bin/gulp.js",
-      "serve": "npm run gulp",
-      "serve:build": "node ./server/index.js",
-      "serve:prod": "node ./server/index.js --prod",
-      "build": "npm run gulp build"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npm run serve:prod",
+        "gulp": "node ./node_modules/gulp/bin/gulp.js",
+        "serve": "npm run gulp",
+        "serve:build": "node ./server/index.js",
+        "serve:prod": "node ./server/index.js --prod",
+        "build": "npm run gulp build"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
-      "gulp": "^4.0.0",
-      "gulp-clean": "^0.4.0",
-      "gulp-clean-css": "^4.2.0",
-      "gulp-concat": "^2.6.1",
-      "gulp-sass": "^5.1.0",
-      "gulp-sourcemaps": "^2.6.5",
-      "gulp-terser": "^1.2.0",
-      "gulp-typescript": "^6.0.0-alpha.1",
-      "gulp-util": "^3.0.8",
-      "typescript": "^4.6.4"
+        "gulp": "^4.0.0",
+        "gulp-clean": "^0.4.0",
+        "gulp-clean-css": "^4.2.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-filter": "^7.0.0",
+        "gulp-sass": "^5.1.0",
+        "gulp-sourcemaps": "^2.6.5",
+        "gulp-terser": "^1.2.0",
+        "gulp-typescript": "^6.0.0-alpha.1",
+        "gulp-util": "^3.0.8",
+        "gulp-zip": "^5.1.0",
+        "typescript": "^4.6.4"
     }
-  }
-  
+}
