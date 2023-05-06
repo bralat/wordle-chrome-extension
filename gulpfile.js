@@ -32,7 +32,6 @@ gulp.task('build-js', gulp.series(function() {
   .pipe(concat('content.js'))
   .pipe(terser({ mangle: true }))
   .pipe(gulp.dest(buildDest+'/scripts'))
-  // include step to zip content
 }));
 
 /**********
@@ -46,10 +45,34 @@ gulp.task('build-js', gulp.series(function() {
 /**********************
  * COPY MANIFEST FILE *
  **********************/
- gulp.task('copy-manifest', gulp.series(function() {
-    return gulp.src('src/manifest.json')
+gulp.task('copy-manifest', gulp.series(function() {
+    return gulp.src(['src/manifest.json', 'src/hello.html'])
     .pipe(gulp.dest(dest))
 }));
+
+/***************************
+ * COPY THIRD-PARTY SCRIPT *
+ ***************************/
+gulp.task('copy-third-party-scripts', gulp.series(function() {
+  return gulp.src('./node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js')
+  .pipe(gulp.dest(dest+'/scripts'))
+}));
+
+/******************
+ * SERVICE WORKER *
+ ******************/
+// gulp.task('service-worker-serve', gulp.series(function() {
+//   console.log("here");
+//   return gulp.src('src/background.ts')
+//   .pipe(tsProject()).js
+//   .pipe(gulp.dest(dest))
+// }));
+// gulp.task('service-worker-build', gulp.series(function() {
+//   return gulp.src('src/background.ts')
+//   .pipe(tsProject()).js
+//   .pipe(terser({ mangle: true }))
+//   .pipe(gulp.dest(dest))
+// }));
 
 /**********
  * OTHERS *
@@ -63,6 +86,7 @@ gulp.task(
     'serve-js',
     'copy-images',
     'copy-manifest',
+    'copy-third-party-scripts',
   ])
 )
 gulp.task(
@@ -89,15 +113,15 @@ gulp.task('watch', gulp.series('prep-serve', function () {
   gulp.watch('src/manifest.json', gulp.series(['copy-manifest']));
 }));
 gulp.task('build', gulp.series([
-    'set-dest-build',
-    'clean',
-    'build-js',
-    'copy-images',
-    'copy-manifest',
-    'compress',
-    'clean-build'
-  ])
-)
+  'set-dest-build',
+  'clean',
+  'build-js',
+  'copy-images',
+  'copy-manifest',
+  'copy-third-party-scripts',
+  'compress',
+  'clean-build'
+]))
 
-//Setting the default function
+// Setting the default function
 gulp.task('default', gulp.series(['set-dest-dev', 'clean', 'prep-serve', 'watch']));
