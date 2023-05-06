@@ -1,11 +1,17 @@
 {
     "manifest_version": 3,
-    "name": "Reading time",
+    "name": "Wordle Guesser",
     "version": "1.0",
     "description": "Add the reading time to Chrome Extension documentation articles",
     "content_scripts": [
         {
-          "js": ["scripts/content.js"]
+          "js": [
+            "scripts/webcomponents-bundle.js",
+            "scripts/content.js"
+          ],
+          "matches": [
+            "https://www.nytimes.com/games/wordle/index.html"
+          ]
         }
     ]
 }

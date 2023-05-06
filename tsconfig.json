@@ -3,6 +3,7 @@
       "noImplicitAny": true,
       "experimentalDecorators": true,
       "moduleResolution": "node",
-      "target": "es5"
+      "target": "es6",
+      "types": ["chrome"]
     }
 }
