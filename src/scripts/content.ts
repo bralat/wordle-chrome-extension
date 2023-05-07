@@ -48,6 +48,10 @@ class StartButton extends BaseElement
         border-radius: 25px;
         border-width: 0px;
       }
+
+      button svg {
+        margin-left: -5px;
+      }
     `
 
     this.shadow.appendChild(style)
@@ -82,9 +86,86 @@ class StartButton extends BaseElement
   }
 }
 
+class Keyboard
+{
+  keyboardElem: HTMLElement
+  letters: {
+    [x: string]: String[],
+  }
+  
+  // states
+  readonly UNASSIGNED_STATE: string = 'unassigned'
+  readonly ABSENT_STATE: string = 'absent'
+  readonly PRESENT_STATE: string = 'present'
+  readonly CORRECT_STATE: string = 'correct'
+
+  constructor() {
+    this.letters = {
+      [this.UNASSIGNED_STATE]: [],
+      [this.ABSENT_STATE]: [],
+      [this.PRESENT_STATE]: [],
+      [this.CORRECT_STATE]: [],
+    }
+    this.categoriseLetters()
+  }
+
+  categoriseLetters () {
+    this.keyboardElem = document.querySelector('.Keyboard-module_keyboard__uYuqf') as HTMLElement;
+    this.keyboardElem.querySelectorAll('button.Key-module_key__kchQI').forEach((elem: Element) => {
+      const state: string = elem.getAttribute('data-state') as string;
+      // console.log(state);
+      if (state) {
+        this.letters[state].push(elem.getAttribute('data-key') as string);
+      } else {
+        this.letters[this.UNASSIGNED_STATE].push(elem.getAttribute('data-key') as string);
+      }
+      
+    })
+  }
+
+  allLettersFound (): Boolean {
+    return this.letters[this.CORRECT_STATE].length === 5;
+  }
+}
+
+/**
+ * Stores the current state of the game
+ */
+class Board
+{
+  boardElem: HTMLElement
+  board: {
+    [x: string]: string,
+  }[][]
+
+  constructor() {
+    this.board = Array(6).fill([]).map(() => (new Array(5)).fill({}));
+    this.boardElem = document.querySelector('.Board-module_boardContainer__TBHNL') as HTMLElement;
+
+    // get data on each row
+    const rowElems = this.boardElem.querySelectorAll('.Row-module_row__pwpBq');
+    rowElems.forEach(function (rowElem: Element, rowIndex: number) {
+      rowElem.querySelectorAll('div.Tile-module_tile__UWEHN').forEach(function (letterElem: Element, letterIndex: number) {
+        const state: string = letterElem.getAttribute('data-state') as string;
+        if (state !== 'empty') {
+          const letter = letterElem.innerHTML;
+          this.board[rowIndex][letterIndex] = {
+            [letter]: state
+          }
+        }
+      }, this)
+    }, this)
+  }
+}
+
 setTimeout(() => {
   // is game completed
+  const keyboard = new Keyboard;
+  if (keyboard.allLettersFound()) {
+    return;
+  }
 
+  const board = new Board;
 
   // if not find empty row - and insert button
   // count the number of empty rows
@@ -93,4 +174,4 @@ setTimeout(() => {
   // insert button
   const buttonElem: StartButton = document.createElement('start-button') as StartButton;
   boardElem.appendChild(buttonElem);
-}, 2000)
+}, 1000)
