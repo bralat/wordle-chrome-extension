@@ -17,5 +17,14 @@
     "background": {
       "service_worker": "background.js"
     },
-    "permissions": ["management"]
+    "permissions": ["management"],
+    "commands": {
+      "reload": {
+        "suggested_key": {
+          "default": "Ctrl+U",
+          "mac": "Command+U"
+        },
+        "description": "Reload extension"
+      }
+    }
 }
