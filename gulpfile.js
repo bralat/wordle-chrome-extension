@@ -19,7 +19,7 @@ gulp.task('set-dest-dev', (done) => { dest = devDest; done()})
  * JAVASCRIPT *
  **************/
 gulp.task('serve-js', gulp.series(function() {
-    return gulp.src('src/**/*.ts')
+  return gulp.src('src/scripts/**/*.ts')
     .pipe(tsProject()).js
     .pipe(sourcemaps.init())
     .pipe(concat('content.js'))
@@ -27,11 +27,11 @@ gulp.task('serve-js', gulp.series(function() {
     .pipe(gulp.dest(devDest+'/scripts'))
 }));
 gulp.task('build-js', gulp.series(function() {
-  return gulp.src('src/**/*.ts')
-  .pipe(tsProject()).js
-  .pipe(concat('content.js'))
-  .pipe(terser({ mangle: true }))
-  .pipe(gulp.dest(buildDest+'/scripts'))
+  return gulp.src('src/scripts/**/*.ts')
+    .pipe(tsProject()).js
+    .pipe(concat('content.js'))
+    .pipe(terser({ mangle: true }))
+    .pipe(gulp.dest(buildDest+'/scripts'))
 }));
 
 /**********
@@ -61,34 +61,25 @@ gulp.task('copy-third-party-scripts', gulp.series(function() {
 /******************
  * SERVICE WORKER *
  ******************/
-// gulp.task('service-worker-serve', gulp.series(function() {
-//   console.log("here");
-//   return gulp.src('src/background.ts')
-//   .pipe(tsProject()).js
-//   .pipe(gulp.dest(dest))
-// }));
-// gulp.task('service-worker-build', gulp.series(function() {
-//   return gulp.src('src/background.ts')
-//   .pipe(tsProject()).js
-//   .pipe(terser({ mangle: true }))
-//   .pipe(gulp.dest(dest))
-// }));
+gulp.task('service-worker-serve', gulp.series(function() {
+  return gulp.src('src/background.ts')
+  .pipe(tsProject()).js
+  .pipe(gulp.dest(dest))
+}));
+gulp.task('service-worker-build', gulp.series(function() {
+  return gulp.src('src/background.ts')
+  .pipe(tsProject()).js
+  .pipe(terser({ mangle: true }))
+  .pipe(gulp.dest(dest))
+}));
 
 /**********
  * OTHERS *
  **********/
 gulp.task('clean', gulp.series(function () {
-  return gulp.src(dest, { read: false })
+  return gulp.src(`${dest}/*`, { read: false })
     .pipe(clean());
 }));
-gulp.task(
-  'prep-serve', gulp.series([
-    'serve-js',
-    'copy-images',
-    'copy-manifest',
-    'copy-third-party-scripts',
-  ])
-)
 gulp.task(
   'compress', gulp.series(function() {
     return gulp.src('build/**/*')
@@ -103,6 +94,15 @@ gulp.task(
       .pipe(filter(['*', '!build.zip']))
       .pipe(clean());
 }));
+gulp.task(
+  'prep-serve', gulp.series([
+    'service-worker-serve',
+    'copy-images',
+    'copy-manifest',
+    'copy-third-party-scripts',
+    'serve-js',
+  ])
+)
 
 /**************
  * MAIN TASKS *
@@ -111,6 +111,7 @@ gulp.task('watch', gulp.series('prep-serve', function () {
   gulp.watch('src/scripts/**/*.ts', gulp.series(['serve-js']));
   gulp.watch('src/images', gulp.series(['copy-images']));
   gulp.watch('src/manifest.json', gulp.series(['copy-manifest']));
+  gulp.watch('src/background.ts', gulp.series(['service-worker-serve']));
 }));
 gulp.task('build', gulp.series([
   'set-dest-build',
@@ -119,8 +120,9 @@ gulp.task('build', gulp.series([
   'copy-images',
   'copy-manifest',
   'copy-third-party-scripts',
+  'service-worker-build',
   'compress',
-  'clean-build'
+  'clean-build',
 ]))
 
 // Setting the default function
