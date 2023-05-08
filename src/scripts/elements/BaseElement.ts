@@ -6,4 +6,11 @@ export default class BaseElement extends HTMLElement
     super()
     this.shadow = this.attachShadow({mode: 'open'});
   }
+
+  createElementFromString(html: string): HTMLCollection {
+    const div: HTMLDivElement = document.createElement('div') as HTMLDivElement
+    div.innerHTML = html.trim();
+
+    return div.children;
+  }
 }
