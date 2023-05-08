@@ -7,6 +7,10 @@ const terser = require('gulp-terser');
 const ts = require("gulp-typescript");
 const zip = require('gulp-zip');
 const tsProject = ts.createProject("tsconfig.json");
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const rollup = require('@rollup/stream');
+const rollupTs = require('@rollup/plugin-typescript');
 
 const buildDest = 'build';
 const devDest = 'dev';
@@ -19,18 +23,23 @@ gulp.task('set-dest-dev', (done) => { dest = devDest; done()})
  * JAVASCRIPT *
  **************/
 gulp.task('serve-js', gulp.series(function() {
-  return gulp.src('src/scripts/**/*.ts')
-    .pipe(tsProject()).js
-    .pipe(sourcemaps.init())
-    .pipe(concat('content.js'))
-    .pipe(sourcemaps.write())
+  return rollup({
+      input: 'src/scripts/index.ts',
+      plugins: [rollupTs()],
+      output: { sourcemap: true }
+    })
+    .pipe(source('content.js'))
+    .pipe(buffer())
     .pipe(gulp.dest(devDest+'/scripts'))
 }));
 gulp.task('build-js', gulp.series(function() {
-  return gulp.src('src/scripts/**/*.ts')
-    .pipe(tsProject()).js
-    .pipe(concat('content.js'))
-    .pipe(terser({ mangle: true }))
+  return rollup({
+      input: 'src/scripts/index.ts',
+      plugins: [rollupTs(), terser({ mangle: true })],
+      output: { format: 'iife', sourcemap: true }
+    })
+    .pipe(source('content.js'))
+    .pipe(buffer())
     .pipe(gulp.dest(buildDest+'/scripts'))
 }));
 
@@ -46,7 +55,7 @@ gulp.task('build-js', gulp.series(function() {
  * COPY MANIFEST FILE *
  **********************/
 gulp.task('copy-manifest', gulp.series(function() {
-    return gulp.src(['src/manifest.json', 'src/hello.html'])
+    return gulp.src(['src/manifest.json'])
     .pipe(gulp.dest(dest))
 }));
 
