@@ -3,7 +3,7 @@ import { PredictedWordInterface } from "../types/PredictedWordsInterface";
 import BaseElement from './BaseElement';
 
 @customElement('word-selector')
-class WordSelector extends BaseElement
+class WordSelectorElement extends BaseElement
 {
   _words: PredictedWordInterface[] = []
   container: Element
@@ -23,7 +23,7 @@ class WordSelector extends BaseElement
 
   set words(words: PredictedWordInterface[]) {
     this._words = words
-    // this.render()
+    this.render()
   }
 
   setStyle() {
@@ -81,4 +81,4 @@ class WordSelector extends BaseElement
   }
 }
 
-export default WordSelector
+export default WordSelectorElement
