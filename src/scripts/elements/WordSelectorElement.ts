@@ -54,30 +54,67 @@ class WordSelectorElement extends BaseElement
         cursor: pointer;
       }
 
-      .word {
+      .prediction-word {
         font-weight: 200;
         font-size: 25px;
         text-transform: uppercase;
+        pointer-events: none;
       }
 
-      .accuracy {
+      .prediction-accuracy {
         font-weight: 200;
         font-size: 25px;
+        pointer-events: none;
       }
     `
 
     this.shadow.appendChild(this.styleElem)
   }
 
+  // attributeChangedCallback
+
   render () {
+    this.container.removeEventListener('click', () => {})
+    this.container.innerHTML = '';
     this._words.forEach(function (word) {
-      this.container.innerHTML += `
-        <div class="prediction">
-          <div class="word">${word.word}</div>
-          <div class="accuracy">${word.accuracy}%</div>
-        </div>
-      `;
+      const predictionElem = this.createElementFromString(`
+        <div class="prediction" >
+          <div class="prediction-word">${word.word}</div>
+          <div class="prediction-accuracy">${word.accuracy}%</div>
+        </div>`
+      )[0];
+      this.container.appendChild(predictionElem);
     }, this)
+
+    this.container.addEventListener('click', function (e: Event) {
+      e.target?.dispatchEvent(new CustomEvent("selected", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          word: e.target?.querySelector('.prediction-word').innerHTML as string,
+          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+        }
+      }))
+    })
+
+    this.container.addEventListener('mouseover', function (e: Event) {
+      // console.log(e.target)
+      e.target?.dispatchEvent(new CustomEvent("hinted", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          word: e.target?.querySelector('.prediction-word').innerHTML as string,
+          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+        }
+      }))
+    })
+
+    this.container.addEventListener('mouseleave', function (e: Event) {
+      e.target?.dispatchEvent(new CustomEvent("clear", {
+        bubbles: true,
+        composed: true,
+      }))
+    })
   }
 }
 

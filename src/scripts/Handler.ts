@@ -22,18 +22,14 @@ export default class Handler {
     this.board = board;
   }
 
-  appendToRow(row: Row, element: Element, offset: number) {
+  appendToRow(row: Row, wrapper: WrapperElement, offset: number) {
     // get the position
     const boundRect: DOMRect = row.element.getBoundingClientRect()
     // append button to row
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('style', `
-       position: absolute;
-       top: ${boundRect.top + 5}px;
-       left: ${boundRect.right + offset}px;
-     `);
+    wrapper.element.style.position = 'absolute';
+    wrapper.element.style.top = `${boundRect.top + 5}px`;
+    wrapper.element.style.left = `${boundRect.right + offset}px`;
 
-    wrapper.appendChild(element);
     document.body.appendChild(wrapper);
   }
 
@@ -45,6 +41,15 @@ export default class Handler {
     this.wordSelector.hide();
     this.button.addEventListener('click', () => {
       this.wordSelector.toggleDisplay()
+    })
+    this.wordSelector.addEventListener('selected', (event) => {
+      this.board.nextRow.insertWord(event.detail.word)
+    })
+    this.wordSelector.addEventListener('hinted', (event) => {
+      this.board.nextRow.hintWord(event.detail.word)
+    })
+    this.wordSelector.addEventListener('clear', (event) => {
+      this.board.nextRow.clear()
     })
 
     this.appendToEmptyRow(this.wordSelector, 80)

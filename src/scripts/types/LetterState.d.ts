@@ -1,1 +1,1 @@
-export type LetterState = 'empty' | 'absent' | 'present' | 'correct';
+export type LetterState = 'empty' | 'absent' | 'present' | 'correct' | 'tbd';
