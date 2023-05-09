@@ -2,7 +2,7 @@ import { customElement } from "../decorators";
 import BaseElement from './BaseElement';
 
 @customElement('start-button') 
-export default class StartButton extends BaseElement
+export default class StartButtonElement extends BaseElement
 {
   constructor () {
     super()
