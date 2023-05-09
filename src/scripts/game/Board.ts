@@ -1,5 +1,3 @@
-import StartButton from "../elements/StartButton"
-import WordSelector from "../elements/WordSelector"
 import Letter from "./Letter"
 import Row from "./Row"
 import { LetterState } from "../types/LetterState"
@@ -9,14 +7,10 @@ import { LetterState } from "../types/LetterState"
  */
 export default class Board {
   boardElem: HTMLElement
-  startButton: StartButton
-  wordSelector: WordSelector
   board: Row[]
   readonly MAX_ROWS = 6
 
-  constructor(startButton: StartButton, wordSelector: WordSelector) {
-    this.startButton = startButton
-    this.wordSelector = wordSelector
+  constructor() {
     this.board = Array(6);
     this.boardElem = document.querySelector('.Board-module_boardContainer__TBHNL') as HTMLElement;
 
@@ -37,52 +31,5 @@ export default class Board {
 
   get nextRow(): Row {
     return this.board.find((row) => row?.is('empty')) as Row;
-  }
-
-  showStartButton() {
-    // get position of empty row
-    const boundRect: DOMRect = this.nextRow.element.getBoundingClientRect()
-
-    // append button to row
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('style', `
-       position: absolute;
-       top: ${boundRect.top + 5}px;
-       left: ${boundRect.right + 10}px;
-     `);
-
-    this.startButton.addEventListener('click', () => {
-      this.showWordSelector()
-    })
-
-    wrapper.appendChild(this.startButton);
-    document.body.appendChild(wrapper);
-  }
-
-  showWordSelector() {
-    // get position of empty row
-    const boundRect: DOMRect = this.nextRow.element.getBoundingClientRect()
-
-    // append button to row
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('style', `
-       position: absolute;
-       top: ${boundRect.top + 5}px;
-       left: ${boundRect.right + 80}px;
-     `);
-    this.wordSelector.words = [
-      {
-        word: 'slate',
-        accuracy: '100',
-      },
-      {
-        word: 'miaou',
-        accuracy: '98.3'
-      }
-    ]
-    wrapper.appendChild(this.wordSelector);
-    document.body.appendChild(wrapper);
-
-
   }
 }
