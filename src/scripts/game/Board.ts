@@ -2,6 +2,14 @@ import Letter from "./Letter"
 import Row from "./Row"
 import { LetterState } from "../types/LetterState"
 
+class ManualEvent {
+  handlers = []
+
+  add (key, handler) {
+    this.handlers[key]
+  }
+}
+
 /**
  * Stores the current state of the game
  */
@@ -20,10 +28,8 @@ export default class Board {
       const row = new Row(rowElem);
       rowElem.querySelectorAll('div.Tile-module_tile__UWEHN').forEach(function (letterElem: Element, letterIndex: number) {
         const state: LetterState = letterElem.getAttribute('data-state') as LetterState;
-        if (state !== 'empty') {
-          const letter = letterElem.innerHTML;
-          row.addLetter(new Letter(letterElem, letter, state));
-        }
+        const letter = letterElem.innerHTML;
+        row.addLetter(new Letter(letterElem, letter, state));
       }, this);
       this.board[rowIndex] = row;
     }, this)
@@ -31,5 +37,9 @@ export default class Board {
 
   get nextRow(): Row {
     return this.board.find((row) => row?.is('empty')) as Row;
+  }
+
+  on (event: string, fn) {
+
   }
 }

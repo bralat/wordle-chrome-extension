@@ -1,6 +1,10 @@
 export default class Keyboard
 {
-  keyboardElem: HTMLElement
+  static BACKSPACE_KEY: string = '←'
+  static ENTER_KEY: string = '↵'
+
+  element: HTMLElement
+  static keyboardClass: string = '.Keyboard-module_keyboard__uYuqf'
   letters: {
     [x: string]: String[],
   }
@@ -18,23 +22,26 @@ export default class Keyboard
       [this.PRESENT_STATE]: [],
       [this.CORRECT_STATE]: [],
     }
-    this.categoriseLetters()
+    // this.categoriseLetters()
   }
 
   categoriseLetters () {
-    this.keyboardElem = document.querySelector('.Keyboard-module_keyboard__uYuqf') as HTMLElement;
-    this.keyboardElem.querySelectorAll('button.Key-module_key__kchQI').forEach((elem: Element) => {
+    this.element = document.querySelector(Keyboard.keyboardClass) as HTMLElement;
+    this.element.querySelectorAll('button.Key-module_key__kchQI').forEach((elem: Element) => {
       const state: string = elem.getAttribute('data-state') as string;
       if (state) {
         this.letters[state].push(elem.getAttribute('data-key') as string);
       } else {
         this.letters[this.EMPTY_STATE].push(elem.getAttribute('data-key') as string);
       }
-      
     })
   }
 
   allLettersFound (): Boolean {
     return this.letters[this.CORRECT_STATE].length === 5;
+  }
+
+  static hit (key: string) {
+    document.querySelector(`${this.keyboardClass} button[data-key='${key}']`)?.click();
   }
 }

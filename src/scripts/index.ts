@@ -19,4 +19,4 @@ setTimeout(() => {
 
   handler.initExtension()
   handler.runPrediction()
-}, 500)
+}, 2000)
