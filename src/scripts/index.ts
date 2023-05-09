@@ -1,8 +1,8 @@
-// wrap elements into class that will allow you to add and remove them from the DOM
 import Board from "./game/Board";
-import StartButton from "./elements/StartButton"
-import WordSelector from "./elements/WordSelector"
+import StartButtonElement from "./elements/StartButtonElement"
+import WordSelectorElement from "./elements/WordSelectorElement"
 import Keyboard from "./game/Keyboard";
+import Handler from "./Handler";
 
 setTimeout(() => {
   // is game completed
@@ -10,15 +10,13 @@ setTimeout(() => {
   if (keyboard.allLettersFound()) {
     return;
   }
-  new StartButton; 
 
-  const startButton: StartButton = new StartButton;
-  const wordSelector: WordSelector = new WordSelector;
-  const board: Board = new Board(startButton, wordSelector);
-  board.showStartButton();
-  // if not find empty row - and insert button
+  const startButton: StartButtonElement = new StartButtonElement;
+  const wordSelector: WordSelectorElement = new WordSelectorElement;
+  const board: Board = new Board();
 
-  // count the number of empty rows
+  const handler: Handler = new Handler(startButton, wordSelector, board)
 
-  // insert button
+  handler.initExtension()
+  handler.runPrediction()
 }, 500)
