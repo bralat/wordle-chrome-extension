@@ -20,7 +20,7 @@ export default class Row
       this.letters[index].insert(letter)
     });
 
-    Keyboard.hit(Keyboard.ENTER_KEY);
+    Keyboard.enter();
   }
 
   hintWord(word: string) {
