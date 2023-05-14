@@ -5,16 +5,14 @@ import App from "./App";
 
 App.onLoad()
   .then(() => {
-    // is game completed
-    if (App.isGameComplete) {
+    // is game complete
+    if (Board.isComplete()) {
       return;
     }
 
     const startButton: StartButtonElement = new StartButtonElement;
     const wordSelector: WordSelectorElement = new WordSelectorElement;
-    const board: Board = new Board();
 
-    const app: App = new App(startButton, wordSelector, board)
+    const app: App = new App(startButton, wordSelector)
     app.initExtension()
-    app.runPrediction()
   })
