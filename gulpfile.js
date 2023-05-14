@@ -1,8 +1,6 @@
 const gulp = require('gulp');
-const sourcemaps = require('gulp-sourcemaps');
 const clean = require('gulp-clean');
 const filter = require('gulp-filter');
-const concat = require('gulp-concat');
 const terser = require('gulp-terser');
 const ts = require("gulp-typescript");
 const zip = require('gulp-zip');
@@ -59,6 +57,14 @@ gulp.task('copy-manifest', gulp.series(function() {
     .pipe(gulp.dest(dest))
 }));
 
+/***************
+ * COPY ASSETS *
+ ***************/
+ gulp.task('copy-assets', gulp.series(function() {
+  return gulp.src(['src/assets/*'])
+    .pipe(gulp.dest(`${dest}/assets`))
+}));
+
 /***************************
  * COPY THIRD-PARTY SCRIPT *
  ***************************/
@@ -108,6 +114,7 @@ gulp.task(
     'service-worker-serve',
     'copy-images',
     'copy-manifest',
+    'copy-assets',
     'copy-third-party-scripts',
     'serve-js',
   ])
