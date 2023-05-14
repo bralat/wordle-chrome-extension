@@ -31,10 +31,6 @@ export default class WrapperElement extends BaseElement {
     this.wrapperElement.classList.remove('hide');
   }
 
-  remove () {
-    this.shadow.removeChild(this.wrapperElement)
-  }
-
   get isVisible(): boolean {
     return !this.wrapperElement.classList.contains('hide')
   }
