@@ -2,14 +2,6 @@ import Letter from "./Letter"
 import Row from "./Row"
 import { LetterState } from "../types/LetterState"
 
-class ManualEvent {
-  handlers = []
-
-  add (key, handler) {
-    this.handlers[key]
-  }
-}
-
 /**
  * Stores the current state of the game
  */
@@ -23,6 +15,10 @@ export default class Board {
     this.boardElem = document.querySelector('.Board-module_boardContainer__TBHNL') as HTMLElement;
 
     // get data on each row
+    this.refreshState()
+  }
+
+  refreshState() {
     const rowElems = this.boardElem.querySelectorAll('.Row-module_row__pwpBq');
     rowElems.forEach(function (rowElem: Element, rowIndex: number) {
       const row = new Row(rowElem);
@@ -35,11 +31,12 @@ export default class Board {
     }, this)
   }
 
-  get nextRow(): Row {
-    return this.board.find((row) => row?.is('empty')) as Row;
+  get loaded (): Boolean {
+    return Boolean(this.boardElem);
   }
 
-  on (event: string, fn) {
-
+  get nextRow(): Row {
+    this.refreshState()
+    return this.board.find((row) => row?.is('empty')) as Row;
   }
 }
