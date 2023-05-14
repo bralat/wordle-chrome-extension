@@ -4,8 +4,15 @@ import Keyboard from "./Keyboard";
 
 export default class Letter
 {
+  static statePriority = {
+    'correct': 10,
+    'present': 20,
+    'absent': 30,
+    'tbd': 40,
+    'empty': 50,
+  }
   readonly element: Element
-  protected letter: string
+  letter: string
   protected _state: LetterState
   protected _mode: InsertModeType
 
@@ -54,11 +61,20 @@ export default class Letter
     this._state = state;
   }
 
+  get state(): LetterState {
+    this._state = this.element.getAttribute('data-state') as LetterState;
+    return this._state
+  }
+
   set mode(state: InsertModeType) {
     if (state === 'hint') {
       this.element.style.opacity = 0.5;
     } else {
       this.element.style.opacity = 1;
     }
+  }
+
+  isPriorityLowerThan(state: LetterState) {
+    return Letter.statePriority[this.state] < Letter.statePriority[state]
   }
 }
