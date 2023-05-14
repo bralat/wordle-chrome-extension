@@ -1,22 +1,20 @@
 import Board from "./game/Board";
 import StartButtonElement from "./elements/StartButtonElement"
 import WordSelectorElement from "./elements/WordSelectorElement"
-import Keyboard from "./game/Keyboard";
-import Handler from "./Handler";
+import App from "./App";
 
-setTimeout(() => {
-  // is game completed
-  const keyboard = new Keyboard;
-  if (keyboard.allLettersFound()) {
-    return;
-  }
+App.onLoad()
+  .then(() => {
+    // is game completed
+    if (App.isGameComplete) {
+      return;
+    }
 
-  const startButton: StartButtonElement = new StartButtonElement;
-  const wordSelector: WordSelectorElement = new WordSelectorElement;
-  const board: Board = new Board();
+    const startButton: StartButtonElement = new StartButtonElement;
+    const wordSelector: WordSelectorElement = new WordSelectorElement;
+    const board: Board = new Board();
 
-  const handler: Handler = new Handler(startButton, wordSelector, board)
-
-  handler.initExtension()
-  handler.runPrediction()
-}, 2000)
+    const app: App = new App(startButton, wordSelector, board)
+    app.initExtension()
+    app.runPrediction()
+  })
