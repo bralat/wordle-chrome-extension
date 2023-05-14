@@ -1,46 +1,43 @@
 import { DictionaryType } from "../types/DictionaryType";
 import { LetterState } from "../types/LetterState";
+import { LetterStatePosition } from "../types/LetterStatePosition";
 import { PredictedWordInterface } from "../types/PredictedWordsInterface";
 import LetterRule from "./LetterRule";
 import Position from "./Position";
 import WordRule from "./WordRule";
 
-type State = {
-    letter: string,
-    state: LetterState,
-    position: number
-}
-
 export default class Predictor
 {
-    letters: State[] = []
+    letterDetails: LetterStatePosition
+    letters: string[] = []
     positions: Position[] = []
     rules: WordRule[] = []
     dictionary: DictionaryType[] = []
 
-    constructor(letters: State[]) {
+    constructor(letterDetails: LetterStatePosition) {
+        this.letters = Keyboard.alphabet;
         this.getDictionary();
 
         this.positions = [...Array(5)].map(() => new Position);
-        this.letters = letters;
+        this.letterDetails = letterDetails;
 
         // set rules for each position based on letter
-        this.letters.forEach((letter: State) => {
-            if (letter.state === 'correct') {
+        this.letters.forEach((letter: string) => {
+            if (this.letterDetails[letter].state === 'correct') {
                 const rule = new LetterRule()
-                rule.is(letter.letter)
-                this.positions[letter.position].addRule(rule)
-            } else if (letter.state === 'present') {
+                rule.is(letter)
+                this.positions[this.letterDetails[letter].position as number].addRule(rule)
+            } else if (this.letterDetails[letter].state === 'present') {
                 let rule = new LetterRule;
-                rule.isNot(letter.letter)
-                this.positions[letter.position].addRule(rule)
+                rule.isNot(letter)
+                this.positions[this.letterDetails[letter].position as number].addRule(rule)
 
                 rule = new WordRule;
-                rule.mustHave(letter.letter);
+                rule.mustHave(letter);
                 this.addRule(rule);
-            } else if (letter.state === 'absent') {
+            } else if (this.letterDetails[letter].state === 'absent') {
                 const rule = new WordRule;
-                rule.mustNotHave(letter.letter);
+                rule.mustNotHave(letter);
                 this.addRule(rule);
             }
         })
@@ -87,6 +84,8 @@ export default class Predictor
                 return false
             }
         })
+
+        console.log(matchingWords)
 
         return matchingWords;
     }
