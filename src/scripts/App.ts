@@ -4,6 +4,7 @@ import WrapperElement from "./elements/WrapperElement"
 import Board from "./game/Board"
 import Keyboard from "./game/Keyboard"
 import Row from "./game/Row"
+import Predictor from "./predictor/Predictor"
 
 /**
  * Stores the current state of the game
@@ -11,16 +12,22 @@ import Row from "./game/Row"
 export default class App {
   protected readonly button: WrapperElement
   protected readonly wordSelector: WrapperElement
-  protected readonly board: Board
+  protected readonly predictor: Predictor
 
   constructor(
     button: StartButtonElement,
-    wordSelector: WordSelectorElement,
-    board: Board
+    wordSelector: WordSelectorElement
   ) {
     this.button = new WrapperElement(button);
     this.wordSelector = new WrapperElement(wordSelector);
-    this.board = board;
+
+    // initialise predictor
+    const keyboardLetters = Keyboard.letters
+    const boardLetters = Board.letters;
+    this.predictor = new Predictor(Object.assign(
+      keyboardLetters,
+      boardLetters
+    ))
   }
 
   static onLoad(): Promise<{}> {
@@ -40,64 +47,38 @@ export default class App {
     return document.querySelectorAll('div.Tile-module_tile__UWEHN').length > 0;
   }
 
-  static get isGameComplete (): Boolean {
-    const keyboard = new Keyboard;
-    return keyboard.allLettersFound()
-  }
-
-  appendToRow(row: Row, wrapper: WrapperElement, offset: number) {
-    // get the position
-    const boundRect: DOMRect = row.element.getBoundingClientRect()
-    // append button to row
-    wrapper.element.style.position = 'absolute';
-    wrapper.element.style.top = `${boundRect.top + 5}px`;
-    wrapper.element.style.left = `${boundRect.right + offset}px`;
-
-    document.body.appendChild(wrapper);
-  }
-
-  appendToEmptyRow(element: Element, offset: number) {
-    this.appendToRow(this.board.nextRow, element, offset);
-  }
-
-  initExtension() {
-    this.wordSelector.hide();
+  initEventListeners() {
     this.button.addEventListener('click', () => {
       this.wordSelector.toggleDisplay()
     })
     this.wordSelector.addEventListener('selected', (event) => {
-      this.board.nextRow.insertWord(event.detail.word)
+      Board.nextRow.insertWord(event.detail.word)
 
       setTimeout(() => {
-        console.log('remove');
+        // console.log('remove');
         this.wordSelector.remove()
         this.button.remove()
 
-        this.appendToEmptyRow(this.wordSelector, 80)
-        this.appendToEmptyRow(this.button, 10)
+        this.wordSelector.element.words = this.predictor.predict()
+        Board.appendToEmptyRow(this.wordSelector, 80)
+        Board.appendToEmptyRow(this.button, 10)
       }, 3000)
     })
     this.wordSelector.addEventListener('hinted', (event) => {
-      this.board.nextRow.hintWord(event.detail.word)
+      Board.nextRow.hintWord(event.detail.word)
     })
     this.wordSelector.addEventListener('clear', (event) => {
-      this.board.nextRow.clear()
+      Board.nextRow.clear()
     })
-
-    this.appendToEmptyRow(this.wordSelector, 80)
-    this.appendToEmptyRow(this.button, 10)
   }
 
-  runPrediction() {
-    this.wordSelector.element.words = [
-      {
-        word: 'slate',
-        accuracy: '100',
-      },
-      {
-        word: 'miaou',
-        accuracy: '98.3'
-      }
-    ]
+  initExtension () {
+    this.wordSelector.hide();
+    this.wordSelector.element.words = this.predictor.predict();
+
+    this.initEventListeners();
+    
+    Board.appendToEmptyRow(this.wordSelector, 80)
+    Board.appendToEmptyRow(this.button, 10)
   }
 }
