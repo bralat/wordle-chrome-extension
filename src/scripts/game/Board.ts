@@ -21,7 +21,7 @@ export default class Board {
     return Board._boardElem;
   }
 
-  static get board() {
+  static get board(): Row[] {
     if (!Board._board){
       Board._board = Array(6);
     }
@@ -71,11 +71,11 @@ export default class Board {
 
   static get lastFilledRow(): Row {
     this.refreshState()
-    return this.board.reverse().find((row: Row): Boolean => row?.is('filled')) as Row;
+    return this.board.toReversed().find((row: Row): Boolean => row?.is('filled')) as Row;
   }
 
   static isComplete(): Boolean {
-    this.lastFilledRow.letters.every((letter: Letter) => {
+    return this.lastFilledRow?.letters.every((letter: Letter) => {
       letter.isState('correct');
     })
   }
