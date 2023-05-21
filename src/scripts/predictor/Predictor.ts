@@ -1,5 +1,5 @@
+import Keyboard from "../game/Keyboard";
 import { DictionaryType } from "../types/DictionaryType";
-import { LetterState } from "../types/LetterState";
 import { LetterStatePosition } from "../types/LetterStatePosition";
 import { PredictedWordInterface } from "../types/PredictedWordsInterface";
 import LetterRule from "./LetterRule";
