@@ -3,7 +3,6 @@ import WordSelectorElement from "./elements/WordSelectorElement"
 import WrapperElement from "./elements/WrapperElement"
 import Board from "./game/Board"
 import Keyboard from "./game/Keyboard"
-import Row from "./game/Row"
 import Predictor from "./predictor/Predictor"
 
 /**
@@ -12,7 +11,7 @@ import Predictor from "./predictor/Predictor"
 export default class App {
   protected readonly button: WrapperElement
   protected readonly wordSelector: WrapperElement
-  protected readonly predictor: Predictor
+  protected predictor: Predictor
 
   constructor(
     button: StartButtonElement,
@@ -30,10 +29,10 @@ export default class App {
     ))
   }
 
-  static onLoad(): Promise<{}> {
+  static ready(): Promise<{}> {
     return new Promise((resolve) => {
       const interval = setInterval(() => {
-        if (this.isLoaded) {
+        if (this.isLoaded && Predictor.ready) {
           clearInterval(interval)
           setTimeout(() => { // TODO: replace with listening for end of animation
             resolve(true);
@@ -55,10 +54,15 @@ export default class App {
       Board.nextRow.insertWord(event.detail.word)
 
       setTimeout(() => {
-        // console.log('remove');
         this.wordSelector.remove()
         this.button.remove()
 
+        const keyboardLetters = Keyboard.letters
+        const boardLetters = Board.letters;
+        this.predictor = new Predictor(Object.assign(
+          keyboardLetters,
+          boardLetters
+        ))
         this.wordSelector.element.words = this.predictor.predict()
         Board.appendToEmptyRow(this.wordSelector, 80)
         Board.appendToEmptyRow(this.button, 10)
@@ -72,12 +76,21 @@ export default class App {
     })
   }
 
+  static async getDictionary() {
+    // check local storage
+    const words = localStorage.getItem('words')
+    if (!words) {
+      const response = await fetch(chrome.runtime.getURL('assets/words.json'));
+      const json = await response.json();
+      localStorage.setItem('words', JSON.stringify(json))
+    }
+  }
+
   initExtension () {
     this.wordSelector.hide();
     this.wordSelector.element.words = this.predictor.predict();
 
     this.initEventListeners();
-    
     Board.appendToEmptyRow(this.wordSelector, 80)
     Board.appendToEmptyRow(this.button, 10)
   }

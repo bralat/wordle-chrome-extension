@@ -3,7 +3,8 @@ import StartButtonElement from "./elements/StartButtonElement"
 import WordSelectorElement from "./elements/WordSelectorElement"
 import App from "./App";
 
-App.onLoad()
+App.getDictionary()
+App.ready()
   .then(() => {
     // is game complete
     if (Board.isComplete()) {
