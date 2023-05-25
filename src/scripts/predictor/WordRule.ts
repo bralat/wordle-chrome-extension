@@ -2,13 +2,17 @@ import Rule from "./Rule";
 
 export default class WordRule extends Rule
 {
-    rule: (a: string) => (b: string) => boolean
+    rule: (b: string) => boolean
 
-    mustHave (originalLetter: string) {
-        this.rule = (newLetter: string) => (originalLetter: string) => newLetter === originalLetter;
+    mustHave (letter: string) {
+        this.rule = (word: string) => word.includes(letter);
     }
 
-    mustNotHave (originalLetter: string) {
-        this.rule = (newLetter: string) => (originalLetter: string) => newLetter !== originalLetter;
+    mustNotHave (letter: string) {
+        this.rule = (word: string) => !word.includes(letter);
+    }
+
+    satisfies (newLetter: string): boolean {
+        return this.rule(newLetter);
     }
 }
