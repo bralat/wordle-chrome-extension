@@ -12,12 +12,10 @@ export default class Predictor
     letters: string[] = []
     positions: Position[] = []
     rules: WordRule[] = []
-    dictionary: DictionaryType[] = []
+    static _dictionary: DictionaryType[]
 
     constructor(letterDetails: LetterStatePosition) {
         this.letters = Keyboard.alphabet;
-        this.getDictionary();
-
         this.positions = [...Array(5)].map(() => new Position);
         this.letterDetails = letterDetails;
 
@@ -26,11 +24,13 @@ export default class Predictor
             if (this.letterDetails[letter].state === 'correct') {
                 const rule = new LetterRule()
                 rule.is(letter)
-                this.positions[this.letterDetails[letter].position as number].addRule(rule)
+                this.positions[this.letterDetails[letter].positions.toReversed()[0] as number].addRule(rule)
             } else if (this.letterDetails[letter].state === 'present') {
                 let rule = new LetterRule;
                 rule.isNot(letter)
-                this.positions[this.letterDetails[letter].position as number].addRule(rule)
+                this.letterDetails[letter].positions.forEach( (index: number) => {
+                    this.positions[index].addRule(rule)
+                });
 
                 rule = new WordRule;
                 rule.mustHave(letter);
@@ -43,36 +43,33 @@ export default class Predictor
         })
     }
 
-    async getDictionary() {
-        // console.log(chrome.runtime.getURL('/assets/words.json'));
-        // const response = await fetch(chrome.runtime.getURL('assets/words.json'));
-        // const json = await response.json();
-        // console.log(json);
+    static get ready (): Boolean {
+        return Boolean(Predictor.dictionary)
+    }
 
-        // this.words = json
-        this.words = [
-            {
-              word: 'slate',
-              popularity: '1',
-            },
-            {
-              word: 'miaou',
-              popularity: '0.9'
-            }
-        ]
+    static get dictionary () {
+        if (!Predictor._dictionary) {
+            Predictor._dictionary = JSON.parse(localStorage.getItem('words'));
+        }
+
+        return Predictor._dictionary;
     }
 
     predict(wordCount: number = 5) {
         const matchingWords: PredictedWordInterface[]  = [];
-        this.words.every((word) => {
+
+        let index = 0;
+        while(index < Predictor.dictionary.length && matchingWords.length < wordCount) {
+            const word = Predictor.dictionary[index]
+            // console.log(word);
             // run letter rules
             const isLetterMatch = word.word.split('').every((letter: string, index: number) => {
                 return this.positions[index].satisfies(letter)
             });
 
             // run word rules
-            // const isWordMatch = this.satisfies(word);
-            const isWordMatch = true;
+            const isWordMatch = this.satisfies(word.word);
+            // const isWordMatch = true;
 
             if (isLetterMatch && isWordMatch) {
                 matchingWords.push({
@@ -80,10 +77,10 @@ export default class Predictor
                     accuracy: '100',
                 });
             }
-            if (matchingWords.length > wordCount) {
-                return false
-            }
-        })
+            index += 1;
+        }
+
+        console.log(this.positions[1].rules);
 
         console.log(matchingWords)
 
@@ -96,6 +93,7 @@ export default class Predictor
 
     private satisfies (word: string): boolean {
         return this.rules.every((rule: WordRule) => {
+            // console.log(rule)
             return rule.satisfies(word)
         })
     } 
