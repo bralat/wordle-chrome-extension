@@ -18,34 +18,23 @@ export default class Keyboard
 
   static categoriseLetters () {
     Keyboard.element = document.querySelector(Keyboard.keyboardClass) as HTMLElement;
-    console.log(Keyboard.element.querySelectorAll('button.Key-module_key__kchQI'));
     Keyboard.element.querySelectorAll('button.Key-module_key__kchQI').forEach((elem: Element) => {
       const state: LetterState = elem.getAttribute('data-state') as LetterState;
       const letter: string = elem.getAttribute('data-key') as string;
       if (Keyboard.alphabet.includes(letter)) {
         Keyboard._letters[letter] = {
           state: state,
-          position: null
+          positions: []
         }
       }
-      // const state: string = elem.getAttribute('data-state') as string;
-      // if (state) {
-      //   Keyboard.letters[state].push(elem.getAttribute('data-key') as string);
-      // } else {
-      //   Keyboard.letters[Keyboard.EMPTY_STATE].push(elem.getAttribute('data-key') as string);
-      // }
     })
   }
-
-  // static allLettersFound (): Boolean {
-  //   return Keyboard.letters[Keyboard.CORRECT_STATE].length === 5;
-  // }
 
   static hit (key: string) {
     document.querySelector(`${this.keyboardClass} button[data-key='${key}']`)?.click();
   }
 
-  static get letters () {
+  static get letters (): LetterStatePosition {
     Keyboard.categoriseLetters()
 
     return Keyboard._letters;
@@ -56,7 +45,7 @@ export default class Keyboard
   }
 
   static backspace () {
-    Keyboard.backspace();
+    Keyboard.hit(Keyboard.BACKSPACE_KEY);
   }
 
   static get alphabet(): string[] {

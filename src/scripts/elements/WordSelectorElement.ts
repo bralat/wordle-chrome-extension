@@ -98,7 +98,6 @@ class WordSelectorElement extends BaseElement
     })
 
     this.container.addEventListener('mouseover', function (e: Event) {
-      // console.log(e.target)
       e.target?.dispatchEvent(new CustomEvent("hinted", {
         bubbles: true,
         composed: true,
