@@ -2,7 +2,7 @@ import { LetterState } from "./LetterState";
 
 interface LetterInfo {
     state: LetterState,
-    position: number|null
+    positions: number[]
 }
 
 export interface LetterStatePosition {

@@ -3,7 +3,6 @@ import Row from "./Row"
 import { LetterState } from "../types/LetterState"
 import WrapperElement from "../elements/WrapperElement"
 import { LetterStatePosition } from "../types/LetterStatePosition"
-import Keyboard from "./Keyboard"
 
 /**
  * Stores the current state of the game
@@ -49,14 +48,16 @@ export default class Board {
 
   static get letters (): LetterStatePosition {
     Board.refreshState()
-    const letters = {};
+    const letters: LetterStatePosition = {};
     this.board.forEach((row: Row) => {
       row.letters.forEach((letter: Letter, index: number) => {
         if (!letters[letter.letter] || letter.isPriorityLowerThan(letters[letter.letter].state)) {
           letters[letter.letter] = {
             state: letter.state,
-            position: index
+            positions: [index]
           }
+        } else if (letter.state === 'present') {
+          letters[letter.letter].positions.push(index)
         }
       });
     });
