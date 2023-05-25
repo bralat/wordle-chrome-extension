@@ -11,8 +11,4 @@ export default class WordRule extends Rule
     mustNotHave (letter: string) {
         this.rule = (word: string) => !word.includes(letter);
     }
-
-    satisfies (newLetter: string): boolean {
-        return this.rule(newLetter);
-    }
 }
