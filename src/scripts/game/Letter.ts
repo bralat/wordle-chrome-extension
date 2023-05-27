@@ -49,8 +49,8 @@ export default class Letter
 
   clear () {
     this.letter = '';
-    Keyboard.hit(Keyboard.BACKSPACE);
-    // this.element.innerHTML = '';
+    Keyboard.hit(Keyboard.BACKSPACE_KEY);
+    this.element.innerHTML = '';
     // this.element.setAttribute('aria-label', '');
     this.state = 'empty';
     this.mode = 'insert';

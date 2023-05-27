@@ -8,18 +8,26 @@ class WordSelectorElement extends BaseElement
   _words: PredictedWordInterface[] = []
   container: Element
   styleElem: HTMLStyleElement
+  _hideNote: Boolean = false
+  noteElement: Element
 
   constructor () {
     super()
 
-    this.container = this.createElementFromString(`
-      <div class="container"></div>
+    const wrapper = this.createElementFromString(`
+      <div class="wrapper">
+        <small>These are some recommended starter words</small>
+        <div class="container"></div>
+      </div>
     `)[0] as Element
 
+    this.noteElement = wrapper.querySelector('small');
+    this.container = wrapper.querySelector('.container');
+
     this.setStyle()
-    this.render();
+    this.render()
     this.appendListeners()
-    this.shadow.appendChild(this.container)
+    this.shadow.appendChild(wrapper)
   }
 
   appendListeners() {
@@ -29,7 +37,7 @@ class WordSelectorElement extends BaseElement
         composed: true,
         detail: {
           word: e.target?.querySelector('.prediction-word').innerHTML as string,
-          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+          // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
         }
       }))
     })
@@ -40,7 +48,7 @@ class WordSelectorElement extends BaseElement
         composed: true,
         detail: {
           word: e.target?.querySelector('.prediction-word').innerHTML as string,
-          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+          // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
         }
       }))
     })
@@ -58,11 +66,15 @@ class WordSelectorElement extends BaseElement
     this.render()
   }
 
+  hideNote() {
+    this.noteElement.remove()
+  }
+
   setStyle() {
     this.styleElem = document.createElement('style')
     this.styleElem.innerHTML = `
-      .container{
-        min-width: 200px;
+      .wrapper{
+        min-width: 100px;
         height: auto;
         min-height: 100px;
         border-radius: 10px;
@@ -72,6 +84,13 @@ class WordSelectorElement extends BaseElement
         display: flex;
         flex-direction: column;
       }
+
+      .wrapper small {
+        opacity: 0.5;
+        padding: 0px 5px;
+      }
+
+      .container{}
 
       .prediction {
         display: flex;
@@ -111,7 +130,7 @@ class WordSelectorElement extends BaseElement
       const predictionElem = this.createElementFromString(`
         <div class="prediction" >
           <div class="prediction-word">${word.word}</div>
-          <div class="prediction-accuracy">${word.accuracy}%</div>
+          <!-- <div class="prediction-accuracy">${word.accuracy}%</div> -->
         </div>`
       )[0];
       this.container.appendChild(predictionElem);

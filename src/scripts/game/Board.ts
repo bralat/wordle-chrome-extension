@@ -79,6 +79,11 @@ export default class Board {
     return this.lastFilledRow?.letters.every((letter: Letter) => letter.isState('correct'))
   }
 
+  static hasStarted(): Boolean {
+    this.refreshState()
+    return !this.board.every((row: Row): Boolean => row?.is('empty')) as Boolean;
+  }
+
   static appendToRow(row: Row, wrapper: WrapperElement, offset: number) {
     // get the position
     const boundRect: DOMRect = row.element.getBoundingClientRect()
