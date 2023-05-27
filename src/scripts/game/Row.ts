@@ -47,7 +47,6 @@ export default class Row
 
   get state(): RowState
   {
-    // console.log(this.filledLetters.length, this.filledLetters)
     return this.filledLetters.length > 0 ? 'filled' : 'empty';
   }
 }
