@@ -45,8 +45,8 @@ gulp.task('build-js', gulp.series(function() {
  * IMAGES *
  **********/
  gulp.task('copy-images', gulp.series(function() {
-    return gulp.src('src/images')
-    .pipe(gulp.dest(dest))
+    return gulp.src('src/images/*')
+    .pipe(gulp.dest(`${dest}/images`))
 }));
 
 /**********************
@@ -135,6 +135,7 @@ gulp.task('build', gulp.series([
   'build-js',
   'copy-images',
   'copy-manifest',
+  'copy-assets',
   'copy-third-party-scripts',
   'service-worker-build',
   'compress',

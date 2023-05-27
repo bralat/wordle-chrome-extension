@@ -1,8 +1,11 @@
 {
     "manifest_version": 3,
     "name": "Wordle Guesser",
-    "version": "1.0",
+    "version": "1.0.0",
     "description": "Guesses the next best word for each row in wordle",
+    "icons": {
+      "128": "images/icon128.png"
+    },
     "content_scripts": [
         {
           "js": [
