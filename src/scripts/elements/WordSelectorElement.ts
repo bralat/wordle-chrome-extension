@@ -18,7 +18,39 @@ class WordSelectorElement extends BaseElement
 
     this.setStyle()
     this.render();
+    this.appendListeners()
     this.shadow.appendChild(this.container)
+  }
+
+  appendListeners() {
+    this.container.addEventListener('click', function (e: Event) {
+      e.target?.dispatchEvent(new CustomEvent("selected", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          word: e.target?.querySelector('.prediction-word').innerHTML as string,
+          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+        }
+      }))
+    })
+
+    this.container.addEventListener('mouseover', function (e: Event) {
+      e.target?.dispatchEvent(new CustomEvent("hinted", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          word: e.target?.querySelector('.prediction-word').innerHTML as string,
+          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+        }
+      }))
+    })
+
+    this.container.addEventListener('mouseleave', function (e: Event) {
+      e.target?.dispatchEvent(new CustomEvent("clear", {
+        bubbles: true,
+        composed: true,
+      }))
+    })
   }
 
   set words(words: PredictedWordInterface[]) {
@@ -74,7 +106,6 @@ class WordSelectorElement extends BaseElement
   // attributeChangedCallback
 
   render () {
-    this.container.removeEventListener('click', () => {})
     this.container.innerHTML = '';
     this._words.forEach(function (word) {
       const predictionElem = this.createElementFromString(`
@@ -84,36 +115,7 @@ class WordSelectorElement extends BaseElement
         </div>`
       )[0];
       this.container.appendChild(predictionElem);
-    }, this)
-
-    this.container.addEventListener('click', function (e: Event) {
-      e.target?.dispatchEvent(new CustomEvent("selected", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          word: e.target?.querySelector('.prediction-word').innerHTML as string,
-          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
-        }
-      }))
-    })
-
-    this.container.addEventListener('mouseover', function (e: Event) {
-      e.target?.dispatchEvent(new CustomEvent("hinted", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          word: e.target?.querySelector('.prediction-word').innerHTML as string,
-          accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
-        }
-      }))
-    })
-
-    this.container.addEventListener('mouseleave', function (e: Event) {
-      e.target?.dispatchEvent(new CustomEvent("clear", {
-        bubbles: true,
-        composed: true,
-      }))
-    })
+    }, this);
   }
 }
 
