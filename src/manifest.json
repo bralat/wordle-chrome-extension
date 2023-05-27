@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Wordle Guesser",
     "version": "1.0",
-    "description": "Add the reading time to Chrome Extension documentation articles",
+    "description": "Guesses the next best word for each row in wordle",
     "content_scripts": [
         {
           "js": [
