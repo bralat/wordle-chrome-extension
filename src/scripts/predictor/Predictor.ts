@@ -56,12 +56,11 @@ export default class Predictor
     }
 
     predict(wordCount: number = 5) {
-        const matchingWords: PredictedWordInterface[]  = [];
+        const matchingWords: PredictedWordInterface[] = [];
 
         let index = 0;
         while(index < Predictor.dictionary.length && matchingWords.length < wordCount) {
             const word = Predictor.dictionary[index]
-            // console.log(word);
             // run letter rules
             const isLetterMatch = word.word.split('').every((letter: string, index: number) => {
                 return this.positions[index].satisfies(letter)
@@ -69,7 +68,6 @@ export default class Predictor
 
             // run word rules
             const isWordMatch = this.satisfies(word.word);
-            // const isWordMatch = true;
 
             if (isLetterMatch && isWordMatch) {
                 matchingWords.push({
@@ -80,10 +78,6 @@ export default class Predictor
             index += 1;
         }
 
-        console.log(this.positions[1].rules);
-
-        console.log(matchingWords)
-
         return matchingWords;
     }
     
@@ -92,9 +86,6 @@ export default class Predictor
     }
 
     private satisfies (word: string): boolean {
-        return this.rules.every((rule: WordRule) => {
-            // console.log(rule)
-            return rule.satisfies(word)
-        })
-    } 
+        return this.rules.every((rule: WordRule) => rule.satisfies(word))
+    }
 }
