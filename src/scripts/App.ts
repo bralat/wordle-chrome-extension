@@ -53,9 +53,14 @@ export default class App {
     this.wordSelector.addEventListener('selected', (event) => {
       Board.nextRow.insertWord(event.detail.word)
 
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         this.wordSelector.remove()
         this.button.remove()
+
+        if (Board.isComplete()) {
+          clearTimeout(timeout);
+          return;
+        }
 
         const keyboardLetters = Keyboard.letters
         const boardLetters = Board.letters;

@@ -45,8 +45,11 @@ export default class Row
     return this.letters.filter((letter: Letter) => letter.isState('empty'))
   }
 
-  get state(): RowState
-  {
+  get state(): RowState {
     return this.filledLetters.length > 0 ? 'filled' : 'empty';
+  }
+
+  get word(): string {
+    return this.letters.map((letter: Letter) => letter.letter).join('')
   }
 }
