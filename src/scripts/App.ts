@@ -68,6 +68,7 @@ export default class App {
           keyboardLetters,
           boardLetters
         ))
+        this.wordSelector.element.hideNote();
         this.wordSelector.element.words = this.predictor.predict()
         Board.appendToEmptyRow(this.wordSelector, 80)
         Board.appendToEmptyRow(this.button, 10)
@@ -93,7 +94,21 @@ export default class App {
 
   initExtension () {
     this.wordSelector.hide();
-    this.wordSelector.element.words = this.predictor.predict();
+
+    if (Board.hasStarted()) {
+      this.wordSelector.element.hideNote();
+      this.wordSelector.element.words = this.predictor.predict();
+    } else {
+      // set starter words
+      // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
+      this.wordSelector.element.words = [
+        { word: 'adieu' },
+        { word: 'about' },
+        { word: 'react' },
+        { word: 'later' },
+        { word: 'roast' },
+      ];
+    }
 
     this.initEventListeners();
     Board.appendToEmptyRow(this.wordSelector, 80)
