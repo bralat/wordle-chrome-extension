@@ -76,9 +76,7 @@ export default class Board {
   }
 
   static isComplete(): Boolean {
-    return this.lastFilledRow?.letters.every((letter: Letter) => {
-      letter.isState('correct');
-    })
+    return this.lastFilledRow?.letters.every((letter: Letter) => letter.isState('correct'))
   }
 
   static appendToRow(row: Row, wrapper: WrapperElement, offset: number) {
