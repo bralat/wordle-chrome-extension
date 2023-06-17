@@ -13,6 +13,7 @@ export default class App {
   protected readonly wordSelector: WrapperElement
   protected predictor: Predictor
   protected static gTagLoaded: Boolean = true
+  protected appTimeout: number
 
   constructor(
     button: StartButtonElement,
@@ -62,12 +63,24 @@ export default class App {
     this.wordSelector.addEventListener('selected', (event) => {
       Board.nextRow.insertWord(event.detail.word)
 
-      const timeout = setTimeout(() => {
-        this.wordSelector.remove()
+      this.resetApp()
+    })
+    this.wordSelector.addEventListener('hinted', (event) => {
+      Board.nextRow.hintWord(event.detail.word)
+    })
+    this.wordSelector.addEventListener('clear', (event) => {
+      Board.nextRow.clear()
+    })
+  }
+
+  resetApp() {
+    clearTimeout(this.appTimeout);
+    const this.appTimeout = setTimeout(() => {
+      this.wordSelector.remove()
         this.button.remove()
 
         if (Board.isComplete()) {
-          clearTimeout(timeout);
+          clearTimeout(this.appTimeout);
           return;
         }
 
@@ -82,13 +95,6 @@ export default class App {
         Board.appendToEmptyRow(this.wordSelector, 80)
         Board.appendToEmptyRow(this.button, 10)
       }, 3000)
-    })
-    this.wordSelector.addEventListener('hinted', (event) => {
-      Board.nextRow.hintWord(event.detail.word)
-    })
-    this.wordSelector.addEventListener('clear', (event) => {
-      Board.nextRow.clear()
-    })
   }
 
   static async getDictionary() {
