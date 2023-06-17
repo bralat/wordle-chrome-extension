@@ -15,6 +15,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.3",
         "@rollup/plugin-typescript": "^11.1.0",
         "@rollup/stream": "^3.0.0",
         "@types/chrome": "^0.0.235",
@@ -23,6 +24,7 @@
         "gulp-clean": "^0.4.0",
         "gulp-concat": "^2.6.1",
         "gulp-filter": "^7.0.0",
+        "gulp-replace": "^1.1.4",
         "gulp-sass": "^5.1.0",
         "gulp-sourcemaps": "^2.6.5",
         "gulp-terser": "^1.2.0",

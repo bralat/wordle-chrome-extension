@@ -4,6 +4,7 @@ import WordSelectorElement from "./elements/WordSelectorElement"
 import App from "./App";
 
 App.getDictionary()
+App.loadGTag()
 App.ready()
   .then(() => {
     // is game complete

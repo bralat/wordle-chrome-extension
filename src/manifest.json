@@ -1,37 +1,37 @@
 {
-    "manifest_version": 3,
-    "name": "Wordle Guesser",
-    "version": "1.0.0",
-    "description": "Guesses the next best word for each row in wordle",
-    "icons": {
-      "128": "images/icon128.png"
-    },
-    "content_scripts": [
-        {
-          "js": [
-            "scripts/webcomponents-bundle.js",
-            "scripts/content.js"
-          ],
-          "matches": [
-            "https://www.nytimes.com/games/wordle/index.html"
-          ]
-        }
-    ],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "permissions": ["management"],
-    "commands": {
-      "reload": {
-        "suggested_key": {
-          "default": "Ctrl+U",
-          "mac": "Command+U"
-        },
-        "description": "Reload extension"
+  "manifest_version": 3,
+  "name": "Wordle Guesser",
+  "version": "1.0.0",
+  "description": "Guesses the next best word for each row in wordle",
+  "icons": {
+    "128": "images/icon128.png"
+  },
+  "content_scripts": [
+      {
+        "js": [
+          "scripts/webcomponents-bundle.js",
+          "scripts/content.js",
+          "scripts/gtag.js"
+        ],
+        "matches": [
+          "https://www.nytimes.com/games/wordle/index.html"
+        ]
       }
-    },
-    "web_accessible_resources": [{
-      "resources": ["assets/words.json"],
-      "matches": ["https://www.nytimes.com/*"]
-    }]
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "reload": {
+      "suggested_key": {
+        "default": "Ctrl+U",
+        "mac": "Command+U"
+      },
+      "description": "Reload extension"
+    }
+  },
+  "web_accessible_resources": [{
+    "resources": ["assets/words.json"],
+    "matches": ["https://www.nytimes.com/*"]
+  }]
 }
