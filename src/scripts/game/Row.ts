@@ -21,7 +21,6 @@ export default class Row
   resetValidity() {
     this.isValid = true;
     if(this.element.classList.contains('Row-module_invalid__RNDXZ')) {
-      console.log('not valid');
       this.isValid = false;
     }
   }

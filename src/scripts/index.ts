@@ -2,6 +2,7 @@ import Board from "./game/Board";
 import StartButtonElement from "./elements/StartButtonElement"
 import WordSelectorElement from "./elements/WordSelectorElement"
 import App from "./App";
+import Keyboard from "./game/Keyboard";
 
 App.getDictionary()
 App.loadGTag()
@@ -16,4 +17,8 @@ App.ready().then(() => {
 
   const app: App = new App(startButton, wordSelector)
   app.initExtension()
+
+  Keyboard.onKey('Enter', () => {
+    app.resetApp()
+  })
 })
