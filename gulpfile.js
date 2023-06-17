@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const clean = require('gulp-clean');
 const filter = require('gulp-filter');
 const terser = require('gulp-terser');
+const rollupTerser = require('@rollup/plugin-terser');
 const ts = require("gulp-typescript");
 const zip = require('gulp-zip');
 const tsProject = ts.createProject("tsconfig.json");
@@ -9,13 +10,23 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const rollup = require('@rollup/stream');
 const rollupTs = require('@rollup/plugin-typescript');
+const replace = require('gulp-replace');
 
 const buildDest = 'build';
 const devDest = 'dev';
 let dest = devDest;
 
-gulp.task('set-dest-build', (done) => { dest = buildDest; done()})
-gulp.task('set-dest-dev', (done) => { dest = devDest; done()})
+let env = {};
+gulp.task('set-dest-build', (done) => {
+  dest = buildDest
+  env.GTAG_ID = 'G-38WQ4XL12W';
+  done()
+})
+gulp.task('set-dest-dev', (done) => {
+  dest = devDest
+  env.GTAG_ID = 'G-YZ7DE2X8NP';
+  done()
+})
 
 /**************
  * JAVASCRIPT *
@@ -27,16 +38,18 @@ gulp.task('serve-js', gulp.series(function() {
       output: { sourcemap: true }
     })
     .pipe(source('content.js'))
+    .pipe(replace('${GTAG_ID}', env.GTAG_ID))
     .pipe(buffer())
     .pipe(gulp.dest(devDest+'/scripts'))
 }));
 gulp.task('build-js', gulp.series(function() {
   return rollup({
       input: 'src/scripts/index.ts',
-      plugins: [rollupTs(), terser({ mangle: true })],
-      output: { format: 'iife', sourcemap: true }
+      plugins: [rollupTs(), rollupTerser({ mangle: true })],
+      output: { format: 'iife'}
     })
     .pipe(source('content.js'))
+    .pipe(replace('${GTAG_ID}', env.GTAG_ID))
     .pipe(buffer())
     .pipe(gulp.dest(buildDest+'/scripts'))
 }));
@@ -60,7 +73,7 @@ gulp.task('copy-manifest', gulp.series(function() {
 /***************
  * COPY ASSETS *
  ***************/
- gulp.task('copy-assets', gulp.series(function() {
+gulp.task('copy-assets', gulp.series(function() {
   return gulp.src(['src/assets/*'])
     .pipe(gulp.dest(`${dest}/assets`))
 }));
@@ -69,7 +82,10 @@ gulp.task('copy-manifest', gulp.series(function() {
  * COPY THIRD-PARTY SCRIPT *
  ***************************/
 gulp.task('copy-third-party-scripts', gulp.series(function() {
-  return gulp.src('./node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js')
+  return gulp.src([
+    './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+    `src/third-party-scripts/gtag_${dest}/gtag.js`,
+  ])
   .pipe(gulp.dest(dest+'/scripts'))
 }));
 
@@ -110,7 +126,7 @@ gulp.task(
       .pipe(clean());
 }));
 gulp.task(
-  'prep-serve', gulp.series([
+  'serve', gulp.series([
     'service-worker-serve',
     'copy-images',
     'copy-manifest',
@@ -123,7 +139,7 @@ gulp.task(
 /**************
  * MAIN TASKS *
  **************/
-gulp.task('watch', gulp.series('prep-serve', function () {
+gulp.task('watch', gulp.series('serve', function () {
   gulp.watch('src/scripts/**/*.ts', gulp.series(['serve-js']));
   gulp.watch('src/images', gulp.series(['copy-images']));
   gulp.watch('src/manifest.json', gulp.series(['copy-manifest']));
@@ -132,15 +148,15 @@ gulp.task('watch', gulp.series('prep-serve', function () {
 gulp.task('build', gulp.series([
   'set-dest-build',
   'clean',
-  'build-js',
-  'copy-images',
+  'service-worker-build',
+  'copy-images',  
   'copy-manifest',
   'copy-assets',
   'copy-third-party-scripts',
-  'service-worker-build',
+  'build-js',
   'compress',
   'clean-build',
 ]))
 
 // Setting the default function
-gulp.task('default', gulp.series(['set-dest-dev', 'clean', 'prep-serve', 'watch']));
+gulp.task('default', gulp.series(['set-dest-dev', 'clean', 'serve', 'watch']));

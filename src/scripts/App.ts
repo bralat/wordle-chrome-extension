@@ -12,6 +12,7 @@ export default class App {
   protected readonly button: WrapperElement
   protected readonly wordSelector: WrapperElement
   protected predictor: Predictor
+  protected static gTagLoaded: Boolean = true
 
   constructor(
     button: StartButtonElement,
@@ -29,6 +30,32 @@ export default class App {
     ))
   }
 
+  static loadGTag() {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', `${GTAG_ID}`);
+    // const js = document.createElement("script");
+
+    // js.type = "text/javascript";
+    // js.src = "https://www.googletagmanager.com/gtag/js?id=G-YZ7DE2X8NP";
+    // js.async = true;
+    // const s = document.getElementsByTagName('script')[0];
+    // s.parentNode.insertBefore(js, s);
+    // js.onload = () => {
+    //   console.log('here');
+    //   window.dataLayer = window.dataLayer || [];
+    //   function gtag(){dataLayer.push(arguments);}
+    //   gtag('js', new Date());
+
+    //   gtag('config', 'G-YZ7DE2X8NP');
+    //   this.gTagLoaded = true
+    // }
+
+    // document.body.appendChild(js);
+  }
+
   static ready(): Promise<{}> {
     return new Promise((resolve) => {
       const interval = setInterval(() => {
@@ -43,7 +70,7 @@ export default class App {
   }
 
   static get isLoaded () {
-    return document.querySelectorAll('div.Tile-module_tile__UWEHN').length > 0;
+    return document.querySelectorAll('div.Tile-module_tile__UWEHN').length > 0 && this.gTagLoaded;
   }
 
   initEventListeners() {
