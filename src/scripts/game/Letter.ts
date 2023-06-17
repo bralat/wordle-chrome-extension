@@ -34,7 +34,6 @@ export default class Letter
     this.mode = 'insert';
     this.letter = letter;
     Keyboard.hit(letter);
-    this.state = 'tbd'
   }
 
   hint(letter: string) {
@@ -43,8 +42,7 @@ export default class Letter
     // this.letter = letter;
     // Keyboard.hit(letter);
     // this.element.innerHTML = letter;
-    // this.element.setAttribute('aria-label', letter);
-    this.state = 'tbd'
+    this.element.setAttribute('aria-label', letter);
   }
 
   clear () {

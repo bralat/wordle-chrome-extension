@@ -6,6 +6,9 @@ export default class Row
 {
   readonly element: Element
   readonly letters: Letter[] = [];
+  isValid = true;
+  statusInterval: number;
+  name: string = ''
 
   constructor(element: Element) {
     this.element = element;
@@ -15,12 +18,22 @@ export default class Row
     this.letters.push(letter);
   }
 
+  resetValidity() {
+    this.isValid = true;
+    if(this.element.classList.contains('Row-module_invalid__RNDXZ')) {
+      console.log('not valid');
+      this.isValid = false;
+    }
+  }
+
   insertWord(word: string) {
+    this.clear();
     word.split('').forEach((letter: string, index: number) => {
       this.letters[index].insert(letter)
     });
 
     Keyboard.enter();
+    this.resetValidity();
   }
 
   hintWord(word: string) {
