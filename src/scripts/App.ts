@@ -75,7 +75,7 @@ export default class App {
 
   resetApp() {
     clearTimeout(this.appTimeout);
-    const this.appTimeout = setTimeout(() => {
+    this.appTimeout = setTimeout(() => {
       this.wordSelector.remove()
         this.button.remove()
 
