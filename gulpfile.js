@@ -49,7 +49,7 @@ gulp.task('build-js', gulp.series(function() {
       output: { format: 'iife'}
     })
     .pipe(source('content.js'))
-    .pipe(replace('${GTAG_ID}', env.GTAG_ID))
+    // .pipe(replace('${GTAG_ID}', env.GTAG_ID))
     .pipe(buffer())
     .pipe(gulp.dest(buildDest+'/scripts'))
 }));
@@ -84,7 +84,7 @@ gulp.task('copy-assets', gulp.series(function() {
 gulp.task('copy-third-party-scripts', gulp.series(function() {
   return gulp.src([
     './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-    `src/third-party-scripts/gtag_${dest}/gtag.js`,
+    // `src/third-party-scripts/gtag_${dest}/gtag.js`,
   ])
   .pipe(gulp.dest(dest+'/scripts'))
 }));
