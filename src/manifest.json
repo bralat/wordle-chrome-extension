@@ -10,8 +10,7 @@
       {
         "js": [
           "scripts/webcomponents-bundle.js",
-          "scripts/content.js",
-          "scripts/gtag.js"
+          "scripts/content.js"
         ],
         "matches": [
           "https://www.nytimes.com/games/wordle/index.html"

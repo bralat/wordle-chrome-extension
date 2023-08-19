@@ -5,7 +5,7 @@ import App from "./App";
 import Keyboard from "./game/Keyboard";
 
 App.getDictionary()
-App.loadGTag()
+// App.loadGTag()
 App.ready().then(() => {
   // is game complete
   if (Board.isComplete()) {
