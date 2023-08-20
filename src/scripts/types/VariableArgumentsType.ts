@@ -1,0 +1,1 @@
+export type VariableArgumentsType = (...args: any[]) => any

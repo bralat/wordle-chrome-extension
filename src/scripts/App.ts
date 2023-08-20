@@ -4,6 +4,7 @@ import WrapperElement from "./elements/WrapperElement"
 import Board from "./game/Board"
 import Keyboard from "./game/Keyboard"
 import Predictor from "./predictor/Predictor"
+import { VariableArgumentsType } from "./types/VariableArgumentsType"
 
 /**
  * Stores the current state of the game
@@ -33,10 +34,11 @@ export default class App {
 
   static loadGTag() {
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    const gtag: VariableArgumentsType = () => window.dataLayer.push(arguments);
     gtag('js', new Date());
 
-    gtag('config', `${GTAG_ID}`);
+    gtag('config', `${window.GTAG_ID}`);
   }
 
   static ready(): Promise<{}> {
@@ -60,12 +62,12 @@ export default class App {
     this.button.addEventListener('click', () => {
       this.wordSelector.toggleDisplay()
     })
-    this.wordSelector.addEventListener('selected', (event) => {
+    this.wordSelector.addEventListener('selected', (event: CustomEvent) => {
       Board.nextRow.insertWord(event.detail.word)
 
       this.resetApp()
     })
-    this.wordSelector.addEventListener('hinted', (event) => {
+    this.wordSelector.addEventListener('hinted', (event: CustomEvent) => {
       Board.nextRow.hintWord(event.detail.word)
     })
     this.wordSelector.addEventListener('clear', (event) => {
@@ -89,9 +91,10 @@ export default class App {
         this.predictor = new Predictor(Object.assign(
           keyboardLetters,
           boardLetters
-        ))
-        this.wordSelector.element.hideNote();
-        this.wordSelector.element.words = this.predictor.predict()
+        ));
+
+        (this.wordSelector.element as WordSelectorElement).hideNote();
+        (this.wordSelector.element as WordSelectorElement).words = this.predictor.predict()
         Board.appendToEmptyRow(this.wordSelector, 80)
         Board.appendToEmptyRow(this.button, 10)
       }, 3000)
@@ -111,12 +114,12 @@ export default class App {
     this.wordSelector.hide();
 
     if (Board.hasStarted()) {
-      this.wordSelector.element.hideNote();
-      this.wordSelector.element.words = this.predictor.predict();
+      (this.wordSelector.element as WordSelectorElement).hideNote();
+      (this.wordSelector.element as WordSelectorElement).words = this.predictor.predict();
     } else {
       // set starter words
       // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
-      this.wordSelector.element.words = [
+      (this.wordSelector.element as WordSelectorElement).words = [
         { word: 'adieu' },
         { word: 'about' },
         { word: 'react' },

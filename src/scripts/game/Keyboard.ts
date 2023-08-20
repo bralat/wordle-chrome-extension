@@ -31,7 +31,7 @@ export default class Keyboard
   }
 
   static hit (key: string) {
-    document.querySelector(`${this.keyboardClass} button[data-key='${key}']`)?.click();
+    (document.querySelector(`${this.keyboardClass} button[data-key='${key}']`) as HTMLButtonElement)?.click();
   }
 
   static get letters (): LetterStatePosition {
@@ -52,7 +52,7 @@ export default class Keyboard
     return ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
   }
 
-  static onKey(key: string, fn) {
+  static onKey(key: string, fn: () => void) {
     document.addEventListener('keyup', (event) => {
       console.log(event);
       if (event.key === key) {

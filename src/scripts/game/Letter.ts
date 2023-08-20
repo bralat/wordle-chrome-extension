@@ -11,12 +11,12 @@ export default class Letter
     'tbd': 40,
     'empty': 50,
   }
-  readonly element: Element
+  readonly element: HTMLElement
   letter: string
   protected _state: LetterState
   protected _mode: InsertModeType
 
-  constructor(element: Element, letter: string, state: LetterState) {
+  constructor(element: HTMLElement, letter: string, state: LetterState) {
     this.element = element;
     this.letter = letter;
     this._state = state;
@@ -66,9 +66,9 @@ export default class Letter
 
   set mode(state: InsertModeType) {
     if (state === 'hint') {
-      this.element.style.opacity = 0.5;
+      this.element.style.opacity = '0.5';
     } else {
-      this.element.style.opacity = 1;
+      this.element.style.opacity = '1';
     }
   }
 
