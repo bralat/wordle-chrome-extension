@@ -10,8 +10,8 @@ import { VariableArgumentsType } from "./types/VariableArgumentsType"
  * Stores the current state of the game
  */
 export default class App {
-  protected readonly button: WrapperElement
-  protected readonly wordSelector: WrapperElement
+  protected readonly button: WrapperElement<StartButtonElement>
+  protected readonly wordSelector: WrapperElement<WordSelectorElement>
   protected predictor: Predictor
   protected static gTagLoaded: Boolean = true
   protected appTimeout: number
@@ -93,8 +93,8 @@ export default class App {
           boardLetters
         ));
 
-        (this.wordSelector.element as WordSelectorElement).hideNote();
-        (this.wordSelector.element as WordSelectorElement).words = this.predictor.predict()
+        this.wordSelector.element.hideNote();
+        this.wordSelector.element.words = this.predictor.predict()
         Board.appendToEmptyRow(this.wordSelector, 80)
         Board.appendToEmptyRow(this.button, 10)
       }, 3000)
@@ -114,12 +114,12 @@ export default class App {
     this.wordSelector.hide();
 
     if (Board.hasStarted()) {
-      (this.wordSelector.element as WordSelectorElement).hideNote();
-      (this.wordSelector.element as WordSelectorElement).words = this.predictor.predict();
+      this.wordSelector.element.hideNote();
+      this.wordSelector.element.words = this.predictor.predict();
     } else {
       // set starter words
       // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
-      (this.wordSelector.element as WordSelectorElement).words = [
+      this.wordSelector.element.words = [
         { word: 'adieu' },
         { word: 'about' },
         { word: 'react' },

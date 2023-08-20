@@ -2,12 +2,12 @@ import BaseElement from "./BaseElement"
 import { customElement } from "../decorators";
 
 @customElement('wrapper-element')
-export default class WrapperElement extends BaseElement {
-  element: BaseElement
+export default class WrapperElement<E extends BaseElement> extends BaseElement {
+  element: E
   wrapperElement: Element
   styleElement: Element
 
-  constructor(element: BaseElement) {
+  constructor(element: E) {
     super()
     this.element = element;
 
