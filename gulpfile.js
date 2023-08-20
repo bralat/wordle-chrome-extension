@@ -49,7 +49,7 @@ gulp.task('build-js', gulp.series(function() {
       output: { format: 'iife'}
     })
     .pipe(source('content.js'))
-    // .pipe(replace('${GTAG_ID}', env.GTAG_ID))
+    // .pipe(replace('${window.GTAG_ID}', env.GTAG_ID))
     .pipe(buffer())
     .pipe(gulp.dest(buildDest+'/scripts'))
 }));
