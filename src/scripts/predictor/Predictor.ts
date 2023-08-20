@@ -26,10 +26,10 @@ export default class Predictor
                 rule.is(letter)
                 this.positions[this.letterDetails[letter].positions.toReversed()[0] as number].addRule(rule)
             } else if (this.letterDetails[letter].state === 'present') {
-                let rule = new LetterRule;
+                let rule: LetterRule | WordRule = new LetterRule;
                 rule.isNot(letter)
                 this.letterDetails[letter].positions.forEach( (index: number) => {
-                    this.positions[index].addRule(rule)
+                    this.positions[index].addRule(rule as LetterRule)
                 });
 
                 rule = new WordRule;

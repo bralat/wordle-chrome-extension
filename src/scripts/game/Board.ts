@@ -9,7 +9,7 @@ import { LetterStatePosition } from "../types/LetterStatePosition"
  */
 export default class Board {
   static _boardElem: HTMLElement
-  static _board: Row[]
+  static _board: Array<Row>;
   static readonly MAX_ROWS = 6
 
   static get boardElem(): HTMLElement {
@@ -20,7 +20,7 @@ export default class Board {
     return Board._boardElem;
   }
 
-  static get board(): Row[] {
+  static get board(): Array<Row> {
     if (!Board._board){
       Board._board = Array(6);
     }
@@ -31,9 +31,9 @@ export default class Board {
   // TODO: run when certain DOM events are triggered
   static refreshState() {
     const rowElems = this.boardElem.querySelectorAll('.Row-module_row__pwpBq');
-    rowElems.forEach(function (rowElem: Element, rowIndex: number) {
+    rowElems.forEach(function (rowElem: HTMLElement, rowIndex: number) {
       const row = new Row(rowElem);
-      rowElem.querySelectorAll('div.Tile-module_tile__UWEHN').forEach(function (letterElem: Element, letterIndex: number) {
+      rowElem.querySelectorAll('div.Tile-module_tile__UWEHN').forEach(function (letterElem: HTMLElement, letterIndex: number) {
         const state: LetterState = letterElem.getAttribute('data-state') as LetterState;
         const letter = letterElem.innerHTML;
         row.addLetter(new Letter(letterElem, letter, state));
@@ -95,7 +95,7 @@ export default class Board {
     document.body.appendChild(wrapper);
   }
 
-  static appendToEmptyRow(element: Element, offset: number) {
+  static appendToEmptyRow(element: WrapperElement, offset: number) {
     this.appendToRow(this.nextRow, element, offset);
   }
 }

@@ -19,6 +19,7 @@
         "@rollup/plugin-typescript": "^11.1.0",
         "@rollup/stream": "^3.0.0",
         "@types/chrome": "^0.0.235",
+        "@types/node": "^20.5.1",
         "@webcomponents/webcomponentsjs": "^2.8.0",
         "gulp": "^4.0.0",
         "gulp-clean": "^0.4.0",

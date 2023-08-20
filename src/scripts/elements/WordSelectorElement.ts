@@ -36,7 +36,7 @@ class WordSelectorElement extends BaseElement
         bubbles: true,
         composed: true,
         detail: {
-          word: e.target?.querySelector('.prediction-word').innerHTML as string,
+          word: (e.target as HTMLElement)?.querySelector('.prediction-word').innerHTML as string,
           // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
         }
       }))
@@ -47,7 +47,7 @@ class WordSelectorElement extends BaseElement
         bubbles: true,
         composed: true,
         detail: {
-          word: e.target?.querySelector('.prediction-word').innerHTML as string,
+          word: (e.target as HTMLElement)?.querySelector('.prediction-word').innerHTML as string,
           // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
         }
       }))
