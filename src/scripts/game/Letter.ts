@@ -1,5 +1,6 @@
 import { InsertModeType } from "../types/InsertModeType";
 import { LetterState } from "../types/LetterState";
+import { LetterInfo } from "../types/LetterStatePosition";
 import Keyboard from "./Keyboard";
 
 export default class Letter
@@ -15,64 +16,57 @@ export default class Letter
   letter: string
   protected _state: LetterState
   protected _mode: InsertModeType
+  statePosition: LetterInfo = {
+    state: 'tbd',
+    positions: []
+  }
+  handlers: Array<{}> = [];
 
-  constructor(element: HTMLElement, letter: string, state: LetterState) {
+  constructor(element: HTMLElement) {
     this.element = element;
-    this.letter = letter;
-    this._state = state;
+    this.statePosition.state = this.element.getAttribute('data-state') as LetterState;
+    this.letter = this.element.getAttribute('data-key') as string;
+    if (this.letter === 'a') {
+      console.log('a', this.statePosition.state);
+    }
   }
 
   isState(state: LetterState): Boolean {
     return this._state === state;
   }
 
-  isMode(mode: InsertModeType): Boolean {
-    return this._mode === mode;
-  }
-
-  insert(letter: string) {
-    this.mode = 'insert';
-    this.letter = letter;
-    Keyboard.hit(letter);
-  }
-
-  hint(letter: string) {
-    this.mode = 'hint';
-    this.element.innerHTML = letter;
-    // this.letter = letter;
-    // Keyboard.hit(letter);
-    // this.element.innerHTML = letter;
-    this.element.setAttribute('aria-label', letter);
-  }
-
-  clear () {
-    this.letter = '';
-    Keyboard.hit(Keyboard.BACKSPACE_KEY);
-    this.element.innerHTML = '';
-    // this.element.setAttribute('aria-label', '');
-    this.state = 'empty';
-    this.mode = 'insert';
-  }
-
-  set state(state: LetterState) {
-    this.element.setAttribute('data-state', state);
-    this._state = state;
-  }
-
   get state(): LetterState {
-    this._state = this.element.getAttribute('data-state') as LetterState;
-    return this._state
-  }
-
-  set mode(state: InsertModeType) {
-    if (state === 'hint') {
-      this.element.style.opacity = '0.5';
-    } else {
-      this.element.style.opacity = '1';
-    }
+    // this._state = this.element.getAttribute('data-state') as LetterState;
+    return this.statePosition.state
   }
 
   isPriorityLowerThan(state: LetterState) {
     return Letter.statePriority[this.state] < Letter.statePriority[state]
+  }
+
+  click(selectorPrefix: string = '') {
+    (document.querySelector(`${selectorPrefix} button[data-key='${this.letter}']`) as HTMLButtonElement)?.click();
+    this.executeHandlers();
+  }
+
+  executeHandlers() {
+    this.handlers.forEach((handler: () => void) => handler())
+  }
+
+  appendState(state: LetterState, position: number) {
+    
+    if (!this.isPriorityLowerThan(state)) {
+      this.statePosition = {state, positions: [position]};
+    }  else if (state === 'present') {
+      this.statePosition.positions.push(position)
+    }
+
+    if (this.letter === 'a') {
+      console.log('a', this.statePosition, state);
+    }
+  }
+
+  onClick(fn: () => void) {
+    this.handlers.push(fn);
   }
 }
