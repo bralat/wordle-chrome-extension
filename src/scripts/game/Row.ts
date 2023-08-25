@@ -1,21 +1,19 @@
 import { RowState } from "../types/RowState";
+import Column from "./Column";
 import Keyboard from "./Keyboard";
 import Letter from "./Letter"
 
 export default class Row
 {
-  readonly element: Element
-  readonly letters: Letter[] = [];
+  readonly _element: Element
+  columns: Column[] = [];
   isValid = true;
   statusInterval: number;
   name: string = ''
+  element: HTMLElement
 
-  constructor(element: Element) {
+  constructor(element: HTMLElement) {
     this.element = element;
-  }
-
-  addLetter(letter: Letter) {
-    this.letters.push(letter);
   }
 
   resetValidity() {
@@ -28,7 +26,7 @@ export default class Row
   insertWord(word: string) {
     this.clear();
     word.split('').forEach((letter: string, index: number) => {
-      this.letters[index].insert(letter)
+      this.columns[index].insert(letter)
     });
 
     Keyboard.enter();
@@ -37,7 +35,7 @@ export default class Row
 
   hintWord(word: string) {
     word.split('').forEach((letter: string, index: number) => {
-      this.letters[index].hint(letter)
+      this.columns[index].hint(letter)
     })
   }
 
@@ -46,15 +44,15 @@ export default class Row
   }
 
   clear () {
-    this.letters.forEach((letter: Letter) => letter.clear());
+    this.columns.forEach((column: Column) => column.clear());
   }
 
-  get filledLetters(): Letter[] {
-    return this.letters.filter((letter: Letter) => !(letter.isState('empty') || letter.isState('tbd')) )
+  get filledLetters(): Column[] {
+    return this.columns.filter((column: Column) => !(column.isState('empty') || column.isState('tbd')) )
   }
 
-  get emptyLetters(): Letter[] {
-    return this.letters.filter((letter: Letter) => letter.isState('empty'))
+  get emptyLetters(): Column[] {
+    return this.columns.filter((column: Column) => column.isState('empty'))
   }
 
   get state(): RowState {
@@ -62,6 +60,6 @@ export default class Row
   }
 
   get word(): string {
-    return this.letters.map((letter: Letter) => letter.letter).join('')
+    return this.columns.map((column: Column) => column.letter.letter).join('')
   }
 }

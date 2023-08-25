@@ -8,14 +8,20 @@ App.getDictionary()
 // App.loadGTag()
 App.ready().then(() => {
   // is game complete
-  if (Board.isComplete()) {
+  const board = new Board({
+    'board': '.Board-module_boardContainer__TBHNL',
+    'row': '.Row-module_row__pwpBq',
+    'column': 'div.Tile-module_tile__UWEHN'
+  });
+
+  if (board.isComplete()) {
     return;
   }
 
   const startButton: StartButtonElement = new StartButtonElement;
   const wordSelector: WordSelectorElement = new WordSelectorElement;
 
-  const app: App = new App(startButton, wordSelector)
+  const app: App = new App(startButton, wordSelector, board)
   app.initExtension()
 
   Keyboard.onKey('Enter', () => {

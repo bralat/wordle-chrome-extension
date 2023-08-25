@@ -15,21 +15,19 @@ export default class App {
   protected predictor: Predictor
   protected static gTagLoaded: Boolean = true
   protected appTimeout: number
+  protected board: Board
 
   constructor(
     button: StartButtonElement,
-    wordSelector: WordSelectorElement
+    wordSelector: WordSelectorElement,
+    board: Board
   ) {
     this.button = new WrapperElement(button);
     this.wordSelector = new WrapperElement(wordSelector);
+    this.board = board
 
     // initialise predictor
-    const keyboardLetters = Keyboard.letters
-    const boardLetters = Board.letters;
-    this.predictor = new Predictor(Object.assign(
-      keyboardLetters,
-      boardLetters
-    ))
+    this.predictor = new Predictor()
   }
 
   static loadGTag() {
@@ -63,15 +61,15 @@ export default class App {
       this.wordSelector.toggleDisplay()
     })
     this.wordSelector.addEventListener('selected', (event: CustomEvent) => {
-      Board.nextRow.insertWord(event.detail.word)
+      this.board.nextRow.insertWord(event.detail.word)
 
       this.resetApp()
     })
     this.wordSelector.addEventListener('hinted', (event: CustomEvent) => {
-      Board.nextRow.hintWord(event.detail.word)
+      this.board.nextRow.hintWord(event.detail.word)
     })
     this.wordSelector.addEventListener('clear', (event) => {
-      Board.nextRow.clear()
+      this.board.nextRow.clear()
     })
   }
 
@@ -81,22 +79,19 @@ export default class App {
       this.wordSelector.remove()
         this.button.remove()
 
-        if (Board.isComplete()) {
+        if (this.board.isComplete()) {
           clearTimeout(this.appTimeout);
           return;
         }
 
-        const keyboardLetters = Keyboard.letters
-        const boardLetters = Board.letters;
-        this.predictor = new Predictor(Object.assign(
-          keyboardLetters,
-          boardLetters
-        ));
+        Keyboard.categoriseLetters();
+        this.board.refreshState();
+        this.predictor = new Predictor();
 
         this.wordSelector.element.hideNote();
         this.wordSelector.element.words = this.predictor.predict()
-        Board.appendToEmptyRow(this.wordSelector, 80)
-        Board.appendToEmptyRow(this.button, 10)
+        this.board.appendToEmptyRow(this.wordSelector, 80)
+        this.board.appendToEmptyRow(this.button, 10)
       }, 3000)
   }
 
@@ -113,7 +108,7 @@ export default class App {
   initExtension () {
     this.wordSelector.hide();
 
-    if (Board.hasStarted()) {
+    if (this.board.hasStarted()) {
       this.wordSelector.element.hideNote();
       this.wordSelector.element.words = this.predictor.predict();
     } else {
@@ -129,7 +124,7 @@ export default class App {
     }
 
     this.initEventListeners();
-    Board.appendToEmptyRow(this.wordSelector, 80)
-    Board.appendToEmptyRow(this.button, 10)
+    this.board.appendToEmptyRow(this.wordSelector, 80)
+    this.board.appendToEmptyRow(this.button, 10)
   }
 }

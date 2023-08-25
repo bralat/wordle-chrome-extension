@@ -1,6 +1,6 @@
 import { LetterState } from "./LetterState";
 
-interface LetterInfo {
+export interface LetterInfo {
     state: LetterState,
     positions: number[]
 }
