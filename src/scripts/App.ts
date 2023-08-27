@@ -3,6 +3,7 @@ import WordSelectorElement from "./elements/WordSelectorElement"
 import WrapperElement from "./elements/WrapperElement"
 import Board from "./game/Board"
 import Keyboard from "./game/Keyboard"
+import Letter from "./game/Letter"
 import Predictor from "./predictor/Predictor"
 import { VariableArgumentsType } from "./types/VariableArgumentsType"
 
@@ -77,22 +78,19 @@ export default class App {
     clearTimeout(this.appTimeout);
     this.appTimeout = setTimeout(() => {
       this.wordSelector.remove()
-        this.button.remove()
+      this.button.remove()
 
-        if (this.board.isComplete()) {
-          clearTimeout(this.appTimeout);
-          return;
-        }
+      if (this.board.isComplete()) {
+        clearTimeout(this.appTimeout);
+        return;
+      }
 
-        Keyboard.categoriseLetters();
-        this.board.refreshState();
-        this.predictor = new Predictor();
-
-        this.wordSelector.element.hideNote();
-        this.wordSelector.element.words = this.predictor.predict()
-        this.board.appendToEmptyRow(this.wordSelector, 80)
-        this.board.appendToEmptyRow(this.button, 10)
-      }, 3000)
+      this.predictor = new Predictor();
+      this.wordSelector.element.hideNote();
+      this.wordSelector.element.words = this.predictor.predict()
+      this.board.appendToEmptyRow(this.wordSelector, 80)
+      this.board.appendToEmptyRow(this.button, 10)
+    }, 3000)
   }
 
   static async getDictionary() {

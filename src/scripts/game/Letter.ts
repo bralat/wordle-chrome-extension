@@ -1,16 +1,15 @@
 import { InsertModeType } from "../types/InsertModeType";
 import { LetterState } from "../types/LetterState";
 import { LetterInfo } from "../types/LetterStatePosition";
-import Keyboard from "./Keyboard";
 
 export default class Letter
 {
   static statePriority = {
-    'correct': 10,
-    'present': 20,
+    'correct': 50,
+    'present': 40,
     'absent': 30,
-    'tbd': 40,
-    'empty': 50,
+    'tbd': 20,
+    'empty': 10,
   }
   readonly element: HTMLElement
   letter: string
@@ -24,19 +23,15 @@ export default class Letter
 
   constructor(element: HTMLElement) {
     this.element = element;
-    this.statePosition.state = this.element.getAttribute('data-state') as LetterState;
+    this.statePosition.state = this.element.getAttribute('data-state') as LetterState || 'tbd';
     this.letter = this.element.getAttribute('data-key') as string;
-    if (this.letter === 'a') {
-      console.log('a', this.statePosition.state);
-    }
   }
 
   isState(state: LetterState): Boolean {
-    return this._state === state;
+    return this.state === state;
   }
 
   get state(): LetterState {
-    // this._state = this.element.getAttribute('data-state') as LetterState;
     return this.statePosition.state
   }
 
@@ -54,15 +49,16 @@ export default class Letter
   }
 
   appendState(state: LetterState, position: number) {
-    
-    if (!this.isPriorityLowerThan(state)) {
-      this.statePosition = {state, positions: [position]};
-    }  else if (state === 'present') {
-      this.statePosition.positions.push(position)
+    // if the state is not any of the expected, do nothing
+    if (!Object.keys(Letter.statePriority).includes(state)) {
+      return;
     }
 
-    if (this.letter === 'a') {
-      console.log('a', this.statePosition, state);
+    if (this.isPriorityLowerThan(state)) {
+      this.statePosition = {state, positions: [position]};
+    }  else if (state === 'present' && !this.statePosition.positions.includes(position)) {
+      this.statePosition.positions.push(position)
+      this.statePosition.state = state;
     }
   }
 
