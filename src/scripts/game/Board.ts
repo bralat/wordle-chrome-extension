@@ -20,23 +20,23 @@ export default class Board {
     this.selectors = selectors
     this.board = Array(6);
     this.boardElem = document.querySelector(this.selectors.board) as HTMLElement;
+    this.refreshState();
   }
 
   // TODO: run when certain DOM events are triggered
   refreshState() {
     const rowElems = this.boardElem.querySelectorAll(this.selectors.row);
-    rowElems.forEach(function (rowElem: HTMLElement, rowIndex: number) {
+    rowElems.forEach((rowElem: HTMLElement, rowIndex: number) => {
       const row = new Row(rowElem);
-      rowElem.querySelectorAll(this.selectors.column).forEach(function (columnElem: HTMLElement, position: number) {
-        const state = columnElem.getAttribute('data-state') as LetterState;
-        const letter = Keyboard.getLetter(columnElem.innerHTML);
-        if (letter) {
-          letter.appendState(state, position);
+      rowElem.querySelectorAll(this.selectors.column).forEach(
+        (columnElem: HTMLElement, position: number) => {
+          row.columns.push(new Column(columnElem, position));
+          // console.log(columnElem);
         }
-        row.columns.push(new Column(columnElem, position));
-      }, this);
+      );
       this.board[rowIndex] = row;
-    }, this)
+      console.log(row);
+    })
   }
 
   get loaded (): Boolean {
@@ -63,12 +63,12 @@ export default class Board {
   // }
 
   get nextRow(): Row {
-    this.refreshState()
+    // this.refreshState()
     return this.board.find((row: Row): Boolean => row?.is('empty')) as Row;
   }
 
   get lastFilledRow(): Row {
-    this.refreshState()
+    // this.refreshState()
     return this.board.toReversed().find((row: Row): Boolean => row?.is('filled')) as Row;
   }
 
@@ -77,7 +77,7 @@ export default class Board {
   }
 
   hasStarted(): Boolean {
-    this.refreshState()
+    // this.refreshState()
     return !this.board.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 

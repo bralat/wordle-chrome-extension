@@ -71,4 +71,10 @@ export default class Keyboard
     });
     // TODO: also listen for when the keys are triggered programatically
   }
+
+  static LettersWithState(state: string): Letter[] {
+    return Keyboard.letters.filter(
+      (letter: Letter) => letter.state === state
+    );
+  }
 }

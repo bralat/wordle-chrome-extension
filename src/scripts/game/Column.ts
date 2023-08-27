@@ -8,18 +8,40 @@ export default class Column
   readonly element: HTMLElement
   _letter?: Letter = null
   protected _mode: InsertModeType
-  protected _state: LetterState
+  protected _state: LetterState = 'tbd'
   position: number
+  observer: MutationObserver
 
   constructor(element: HTMLElement, position: number) {
     this.element = element;
     this.letter = Keyboard.getLetter(this.element.innerHTML);
     this.position = position;
-    this.refreshState();
+    // this.refreshState();
+    this.state = this.element.getAttribute('data-state') as LetterState;
+    if (this.letter) {
+        this.letter.appendState(this.state, this.position);
+    }
+
+    this.setUpObserver()
+  }
+
+  setUpObserver() {
+    if (!this.letter || this.observer){
+        return;
+    }
+
+    this.observer = new MutationObserver((mutationList, observer) => {
+        mutationList.forEach((mutation: MutationRecord) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-state') {
+                this.refreshState()
+            }
+        })
+    });
+
+    this.observer.observe(this.element, {attributes: true});
   }
 
   refreshState() {
-    this.state = this.element.getAttribute('data-state') as LetterState;
     if (this.letter) {
         this.letter.appendState(this.state, this.position);
     }
@@ -47,7 +69,7 @@ export default class Column
     this.mode = 'insert';
     this.letter = letter instanceof Letter ? letter: Keyboard.getLetter(letter);
     this.letter.click();
-    this.refreshState();
+    this.setUpObserver()
   }
 
   hint(letter: Letter|string) {
