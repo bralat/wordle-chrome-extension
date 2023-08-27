@@ -62,11 +62,6 @@ export default class Letter
       this.statePosition = {state, positions: [position]};
     }  else if (this.isPriorityEqualTo(state) && !this.statePosition.positions.includes(position)) {
       this.statePosition.positions.push(position)
-      // this.statePosition.state = state;
-    }
-
-    if (this.letter === 'e') {
-      console.log(this.statePosition)
     }
   }
 
