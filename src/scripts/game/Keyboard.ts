@@ -1,5 +1,3 @@
-import { LetterState } from "../types/LetterState"
-import { LetterStatePosition } from "../types/LetterStatePosition"
 import Letter from "./Letter"
 
 export default class Keyboard
@@ -63,9 +61,9 @@ export default class Keyboard
     return ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
   }
 
-  static onKey(key: string, fn: () => void) {
+  static onKey(key: Letter, fn: () => void) {
     document.addEventListener('keyup', (event) => {
-      if (event.key === key) {
+      if (event.key === key.letter) {
         fn();
       }
     });
