@@ -24,7 +24,5 @@ App.ready().then(() => {
   const app: App = new App(startButton, wordSelector, board)
   app.initExtension()
 
-  Keyboard.onKey('Enter', () => {
-    app.resetApp()
-  })
+  Keyboard.ENTER_KEY.onClick(() => app.resetApp())
 })
