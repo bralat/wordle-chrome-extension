@@ -1,11 +1,7 @@
-import Letter from "./Letter"
 import Row from "./Row"
-import { LetterState } from "../types/LetterState"
 import WrapperElement from "../elements/WrapperElement"
-import { LetterStatePosition } from "../types/LetterStatePosition"
 import { BoardSelectors } from "../types/BoardSelectors"
 import Column from "./Column"
-import Keyboard from "./Keyboard"
 
 /**
  * Stores the current state of the game
@@ -29,13 +25,9 @@ export default class Board {
     rowElems.forEach((rowElem: HTMLElement, rowIndex: number) => {
       const row = new Row(rowElem);
       rowElem.querySelectorAll(this.selectors.column).forEach(
-        (columnElem: HTMLElement, position: number) => {
-          row.columns.push(new Column(columnElem, position));
-          // console.log(columnElem);
-        }
+        (columnElem: HTMLElement, position: number) => row.columns.push(new Column(columnElem, position))
       );
       this.board[rowIndex] = row;
-      console.log(row);
     })
   }
 
@@ -43,32 +35,11 @@ export default class Board {
     return Boolean(this.boardElem);
   }
 
-  // get letters (): LetterStatePosition {
-  //   this.refreshState()
-  //   const letters: LetterStatePosition = {};
-  //   this.board.forEach((row: Row) => {
-  //     row.columns.forEach((column: Column, index: number) => {
-  //       if (!letters[column.letter.letter] || column.letter.isPriorityLowerThan(letters[column.letter.letter].state)) {
-  //         letters[column.letter.letter] = {
-  //           state: column.letter.state,
-  //           positions: [index]
-  //         }
-  //       } else if (column.letter.state === 'present') {
-  //         letters[column.letter.letter].positions.push(index)
-  //       }
-  //     });
-  //   });
-
-  //   return letters;
-  // }
-
   get nextRow(): Row {
-    // this.refreshState()
     return this.board.find((row: Row): Boolean => row?.is('empty')) as Row;
   }
 
   get lastFilledRow(): Row {
-    // this.refreshState()
     return this.board.toReversed().find((row: Row): Boolean => row?.is('filled')) as Row;
   }
 
@@ -77,7 +48,6 @@ export default class Board {
   }
 
   hasStarted(): Boolean {
-    // this.refreshState()
     return !this.board.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 
