@@ -39,6 +39,10 @@ export default class Letter
     return Letter.statePriority[this.state] < Letter.statePriority[state]
   }
 
+  isPriorityEqualTo(state: LetterState) {
+    return Letter.statePriority[this.state] === Letter.statePriority[state]
+  }
+
   click(selectorPrefix: string = '') {
     (document.querySelector(`${selectorPrefix} button[data-key='${this.letter}']`) as HTMLButtonElement)?.click();
     this.executeHandlers();
@@ -56,9 +60,13 @@ export default class Letter
 
     if (this.isPriorityLowerThan(state)) {
       this.statePosition = {state, positions: [position]};
-    }  else if (state === 'present' && !this.statePosition.positions.includes(position)) {
+    }  else if (this.isPriorityEqualTo(state) && !this.statePosition.positions.includes(position)) {
       this.statePosition.positions.push(position)
-      this.statePosition.state = state;
+      // this.statePosition.state = state;
+    }
+
+    if (this.letter === 'e') {
+      console.log(this.statePosition)
     }
   }
 

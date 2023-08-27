@@ -26,13 +26,16 @@ export default class Column
   }
 
   setUpObserver() {
-    if (!this.letter || this.observer){
+    if (this.observer){
         return;
     }
 
     this.observer = new MutationObserver((mutationList, observer) => {
         mutationList.forEach((mutation: MutationRecord) => {
             if (mutation.type === 'attributes' && mutation.attributeName === 'data-state') {
+                if (Keyboard.alphabet.includes(mutation.target.textContent)) {
+                    this.letter = Keyboard.getLetter(mutation.target.textContent);
+                }
                 this.refreshState()
             }
         })
