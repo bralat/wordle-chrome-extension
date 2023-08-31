@@ -49,7 +49,7 @@ export default class Letter
   }
 
   executeHandlers() {
-    this.handlers.forEach((handler: () => void) => handler())
+    // this.handlers.forEach((handler: () => void) => handler())
   }
 
   appendState(state: LetterState, position: number) {
@@ -67,14 +67,14 @@ export default class Letter
 
   onClick(fn: () => void) {
     // append to handlers for programmatic trigger
-    this.handlers.push(fn);
-    // add event listener for keyboard trigger
+    // this.handlers.push(fn);
+    // add event listener for physical keyboard trigger
     document.addEventListener('keyup', (event) => {
       if (event.key === this.letter) {
         fn();
       }
     });
-    // add listener for element click
+    // add event listener for virtual keyboard trigger
     this.element.addEventListener('click', () => fn())
   }
 }

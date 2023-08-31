@@ -1,78 +1,69 @@
 import { customElement } from "../decorators";
+import { Reactive } from "../directives/Reactive";
 import { PredictedWordInterface } from "../types/PredictedWordsInterface";
 import BaseElement from './BaseElement';
 
 @customElement('word-selector')
 class WordSelectorElement extends BaseElement
 {
-  _words: PredictedWordInterface[] = []
+  _words: Reactive<PredictedWordInterface[]>
   container: Element
   styleElem: HTMLStyleElement
-  _hideNote: Boolean = false
+  _hideNote: Reactive<Boolean>
   noteElement: Element
 
   constructor () {
     super()
 
-    const wrapper = this.createElementFromString(`
-      <div class="wrapper">
-        <small>These are some recommended starter words</small>
-        <div class="container"></div>
-      </div>
-    `)[0] as Element
-
-    this.noteElement = wrapper.querySelector('small');
-    this.container = wrapper.querySelector('.container');
-
-    this.setStyle()
+    this._hideNote = new Reactive(true);
+    this._words = new Reactive([]);
+    this.eventHandlers = {
+      'click': this.clickHandler,
+      'mouseover': this.mouseOverHandler,
+      'leave': this.mouseLeaveHandler
+    }
     this.render()
-    this.appendListeners()
-    this.shadow.appendChild(wrapper)
   }
 
-  appendListeners() {
-    this.container.addEventListener('click', function (e: Event) {
-      e.target?.dispatchEvent(new CustomEvent("selected", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          word: (e.target as HTMLElement)?.querySelector('.prediction-word').innerHTML as string,
-          // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
-        }
-      }))
-    })
+  clickHandler(e: Event) {
+    e.target?.dispatchEvent(new CustomEvent("selected", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        word: (e.target as HTMLElement)?.querySelector('.prediction-word').innerHTML as string,
+        // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+      }
+    }))
+  }
 
-    this.container.addEventListener('mouseover', function (e: Event) {
-      e.target?.dispatchEvent(new CustomEvent("hinted", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          word: (e.target as HTMLElement)?.querySelector('.prediction-word').innerHTML as string,
-          // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
-        }
-      }))
-    })
+  mouseOverHandler(e: Event) {
+    e.target?.dispatchEvent(new CustomEvent("hinted", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        word: (e.target as HTMLElement)?.querySelector('.prediction-word').innerHTML as string,
+        // accuracy: e.target?.querySelector('.prediction-accuracy').innerHTML as string,
+      }
+    }))
+  }
 
-    this.container.addEventListener('mouseleave', function (e: Event) {
-      e.target?.dispatchEvent(new CustomEvent("clear", {
-        bubbles: true,
-        composed: true,
-      }))
-    })
+  mouseLeaveHandler(e: Event) {
+    e.target?.dispatchEvent(new CustomEvent("clear", {
+      bubbles: true,
+      composed: true,
+    }))
   }
 
   set words(words: PredictedWordInterface[]) {
-    this._words = words
-    this.render()
+    this._words.value = words
   }
 
   hideNote() {
-    this.noteElement.remove()
+    this._hideNote.value = true;
   }
 
-  setStyle() {
-    this.styleElem = document.createElement('style')
-    this.styleElem.innerHTML = `
+  get css(): string {
+    return `
       .wrapper{
         min-width: 100px;
         height: auto;
@@ -118,23 +109,20 @@ class WordSelectorElement extends BaseElement
         pointer-events: none;
       }
     `
-
-    this.shadow.appendChild(this.styleElem)
   }
 
-  // attributeChangedCallback
-
-  render () {
-    this.container.innerHTML = '';
-    this._words.forEach(function (word) {
-      const predictionElem = this.createElementFromString(`
-        <div class="prediction" >
-          <div class="prediction-word">${word.word}</div>
-          <!-- <div class="prediction-accuracy">${word.accuracy}%</div> -->
-        </div>`
-      )[0];
-      this.container.appendChild(predictionElem);
-    }, this);
+  get view(): string {
+    return `
+      <div class="wrapper">
+        <small data-hide="_hideNote">These are some recommended starter words</small>
+        <div class="container" data-subscribe="eventHandlers">
+          <div class="prediction" data-forEach="word in _words">
+            <div class="prediction-word">{{word.word}}</div>
+            <!-- <div class="prediction-accuracy">{{word.accuracy}}%</div> -->
+          </div>
+        </div>
+      </div>
+    `
   }
 }
 
