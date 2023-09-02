@@ -17,7 +17,7 @@ export class Reactive<T>
     }
 
     set value(value: T) {
-        this._effect && this._effect(value)
         this._value = value;
+        this._effect && this._effect(value)
     }
 }

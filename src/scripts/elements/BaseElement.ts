@@ -38,7 +38,6 @@ export default class BaseElement extends HTMLElement
   }
 
   runDirectives(element: Element): Element {
-    console.log('con', this)
     return (new Directive(element, this)).finalElement
   }
 
@@ -48,7 +47,6 @@ export default class BaseElement extends HTMLElement
 
   appendToView(element: HTMLElement): Element {
     this.shadow.appendChild(element)
-    console.log(element);
 
     return element;
   }
