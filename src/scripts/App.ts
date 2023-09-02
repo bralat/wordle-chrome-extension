@@ -2,8 +2,6 @@ import StartButtonElement from "./elements/StartButtonElement"
 import WordSelectorElement from "./elements/WordSelectorElement"
 import WrapperElement from "./elements/WrapperElement"
 import Board from "./game/Board"
-import Keyboard from "./game/Keyboard"
-import Letter from "./game/Letter"
 import Predictor from "./predictor/Predictor"
 import { VariableArgumentsType } from "./types/VariableArgumentsType"
 

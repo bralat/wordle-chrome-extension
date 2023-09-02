@@ -15,12 +15,12 @@ class WordSelectorElement extends BaseElement
   constructor () {
     super()
 
-    this._hideNote = new Reactive(true);
+    this._hideNote = new Reactive(false);
     this._words = new Reactive([]);
     this.eventHandlers = {
       'click': this.clickHandler,
       'mouseover': this.mouseOverHandler,
-      'leave': this.mouseLeaveHandler
+      'mouseleave': this.mouseLeaveHandler
     }
     this.render()
   }
