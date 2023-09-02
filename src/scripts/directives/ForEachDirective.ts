@@ -60,5 +60,4 @@ export class ForEachDirective
 
         this.parentElement.replaceChildren(...docFragment.children)
     }
-
 }

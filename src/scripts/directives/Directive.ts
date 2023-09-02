@@ -1,5 +1,6 @@
 import { ForEachDirective } from "./ForEachDirective"
 import { HideDirective } from "./HideDirective"
+import { SubscribeDirective } from "./SubscribeDirective"
 
 export default class Directive
 {
@@ -19,6 +20,10 @@ export default class Directive
 
     foreach(rootElement: Element) {
         (new ForEachDirective(rootElement, this.context)).render()
+    }
+
+    subscribe(rootElement: Element) {
+        (new SubscribeDirective(rootElement, this.context)).render()
     }
 
     analyseTree(parent: Element): Element {
