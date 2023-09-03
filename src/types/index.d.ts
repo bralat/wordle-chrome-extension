@@ -3,7 +3,7 @@ export {};
 declare global {
   interface Window {
     dataLayer: IArguments[];
-    GTAG_ID: string
+    GTAG_ID: string;
   }
 
   interface Array<T> {
