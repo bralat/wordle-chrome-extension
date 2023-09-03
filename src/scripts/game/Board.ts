@@ -7,40 +7,40 @@ import Column from "./Column"
  * Stores the current state of the game
  */
 export default class Board {
-  boardElem: HTMLElement
-  board: Array<Row>;
-  readonly MAX_ROWS = 6
+  element: HTMLElement
+  rows: Array<Row>;
+  static MAX_ROWS = 6
   selectors: BoardSelectors
 
   constructor(selectors: BoardSelectors) {
     this.selectors = selectors
-    this.board = Array(6);
-    this.boardElem = document.querySelector(this.selectors.board) as HTMLElement;
-    this.refreshState();
+    this.rows = Array(Board.MAX_ROWS);
+    this.element = document.querySelector(this.selectors.board) as HTMLElement;
+    this.initState();
   }
 
   // TODO: run when certain DOM events are triggered
-  refreshState() {
-    const rowElems = this.boardElem.querySelectorAll(this.selectors.row);
+  initState() {
+    const rowElems = this.element.querySelectorAll(this.selectors.row);
     rowElems.forEach((rowElem: HTMLElement, rowIndex: number) => {
       const row = new Row(rowElem);
       rowElem.querySelectorAll(this.selectors.column).forEach(
         (columnElem: HTMLElement, position: number) => row.columns.push(new Column(columnElem, position))
       );
-      this.board[rowIndex] = row;
+      this.rows[rowIndex] = row;
     })
   }
 
   get loaded (): Boolean {
-    return Boolean(this.boardElem);
+    return Boolean(this.element);
   }
 
   get nextRow(): Row {
-    return this.board.find((row: Row): Boolean => row?.is('empty')) as Row;
+    return this.rows.find((row: Row): Boolean => row?.is('empty')) as Row;
   }
 
   get lastFilledRow(): Row {
-    return this.board.toReversed().find((row: Row): Boolean => row?.is('filled')) as Row;
+    return this.rows.toReversed().find((row: Row): Boolean => row?.is('filled')) as Row;
   }
 
   isComplete(): Boolean {
@@ -48,7 +48,7 @@ export default class Board {
   }
 
   inProgress(): Boolean {
-    return !this.board.every((row: Row): Boolean => row?.is('empty')) as Boolean;
+    return !this.rows.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 
   appendToRow(row: Row, wrapper: WrapperElement, offset: number) {

@@ -5,11 +5,8 @@ import Letter from "./Letter"
 
 export default class Row
 {
-  readonly _element: Element
   columns: Column[] = [];
   isValid = true;
-  statusInterval: number;
-  name: string = ''
   element: HTMLElement
 
   constructor(element: HTMLElement) {
