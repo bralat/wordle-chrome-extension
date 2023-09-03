@@ -13,7 +13,7 @@ export default class App {
   protected readonly wordSelector: WrapperElement
   protected predictor: Predictor
   protected static gTagLoaded: Boolean = true
-  protected appTimeout: number
+  protected appTimeout: ReturnType<typeof setTimeout>
   protected board: Board
 
   constructor(
@@ -27,6 +27,7 @@ export default class App {
 
     // initialise predictor
     this.predictor = new Predictor()
+    this.initExtension()
   }
 
   static loadGTag() {
@@ -62,7 +63,7 @@ export default class App {
     this.wordSelector.addEventListener('selected', (event: CustomEvent) => {
       this.board.nextRow.insertWord(event.detail.word)
 
-      this.resetApp()
+      this.reset()
     })
     this.wordSelector.addEventListener('hinted', (event: CustomEvent) => {
       this.board.nextRow.hintWord(event.detail.word)
@@ -72,7 +73,7 @@ export default class App {
     })
   }
 
-  resetApp() {
+  reset() {
     clearTimeout(this.appTimeout);
     this.appTimeout = setTimeout(() => {
       this.wordSelector.remove()
@@ -104,7 +105,7 @@ export default class App {
   initExtension () {
     this.wordSelector.hide();
 
-    if (this.board.hasStarted()) {
+    if (this.board.inProgress()) {
       this.wordSelector.element.hideNote();
       this.wordSelector.element.words = this.predictor.predict();
     } else {
