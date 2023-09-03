@@ -22,7 +22,6 @@ export default class Directive
 
     analyseTree(parent: HTMLElement): HTMLElement {
         for (const attributeName of parent.getAttributeNames()) {
-            console.log(attributeName);
             if (attributeName.startsWith('data-')) {
                 const method = attributeName.split('data-');
                 if (method[1] && Object.keys(this.directives).includes(method[1])) {
