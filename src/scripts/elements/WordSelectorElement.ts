@@ -7,10 +7,8 @@ import BaseElement from './BaseElement';
 class WordSelectorElement extends BaseElement
 {
   _words: Reactive<PredictedWordInterface[]>
-  container: Element
-  styleElem: HTMLStyleElement
   _hideNote: Reactive<Boolean>
-  noteElement: Element
+  styleElem: HTMLStyleElement
 
   constructor () {
     super()

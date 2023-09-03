@@ -1,14 +1,16 @@
+import BaseElement from "../elements/BaseElement"
+import { DirectiveInterface } from "../types/DirectiveInterface"
 import { Reactive } from "./Reactive"
 
-export class ForEachDirective
+export class ForEachDirective implements DirectiveInterface
 {
-    rootElement: Element
-    parentElement: Element
-    context: Element
+    rootElement: HTMLElement
+    parentElement: HTMLElement
+    context: BaseElement
     iterable: Reactive<[]>
     replaceTerm: string
 
-    constructor(rootElement: Element, context: Element) {
+    constructor(rootElement: HTMLElement, context: BaseElement) {
         this.rootElement = rootElement
         this.parentElement = this.rootElement.parentElement
         this.context = context
@@ -27,8 +29,8 @@ export class ForEachDirective
         this.duplicateElements();
     }
 
-    get template(): Element {
-        return this.rootElement.cloneNode(true) as Element
+    get template(): BaseElement {
+        return this.rootElement.cloneNode(true) as BaseElement
     }
 
     duplicateElements() {

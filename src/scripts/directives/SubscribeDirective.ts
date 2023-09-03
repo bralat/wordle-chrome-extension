@@ -1,13 +1,15 @@
-import { Reactive } from "./Reactive"
+import BaseElement from "../elements/BaseElement"
+import { DirectiveInterface } from "../types/DirectiveInterface"
+import { SubscriberType } from "../types/SubscriberType"
 
-export class SubscribeDirective
+export class SubscribeDirective implements DirectiveInterface
 {
-    rootElement: Element
-    parentElement: Element
-    context: Element
-    listeners: Reactive<[]>
+    rootElement: HTMLElement
+    parentElement: BaseElement
+    context: BaseElement
+    listeners: SubscriberType
 
-    constructor(rootElement: Element, context: Element) {
+    constructor(rootElement: HTMLElement, context: BaseElement) {
         this.rootElement = rootElement
         this.context = context
         const subscribeVariable = rootElement.getAttribute('data-subscribe');

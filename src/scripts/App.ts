@@ -9,8 +9,8 @@ import { VariableArgumentsType } from "./types/VariableArgumentsType"
  * Stores the current state of the game
  */
 export default class App {
-  protected readonly button: WrapperElement<StartButtonElement>
-  protected readonly wordSelector: WrapperElement<WordSelectorElement>
+  protected readonly button: WrapperElement
+  protected readonly wordSelector: WrapperElement
   protected predictor: Predictor
   protected static gTagLoaded: Boolean = true
   protected appTimeout: number
@@ -67,7 +67,7 @@ export default class App {
     this.wordSelector.addEventListener('hinted', (event: CustomEvent) => {
       this.board.nextRow.hintWord(event.detail.word)
     })
-    this.wordSelector.addEventListener('clear', (event) => {
+    this.wordSelector.addEventListener('clear', (event: CustomEvent) => {
       this.board.nextRow.clear()
     })
   }

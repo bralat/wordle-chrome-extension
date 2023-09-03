@@ -1,44 +1,38 @@
 import { ForEachDirective } from "./ForEachDirective"
 import { HideDirective } from "./HideDirective"
 import { SubscribeDirective } from "./SubscribeDirective"
+import BaseElement from "../elements/BaseElement"
 
 export default class Directive
 {
-    element: Element
-    context: Element
-    finalElement: Element
+    element: HTMLElement
+    context: BaseElement
+    finalElement: HTMLElement
+    directives: {[d: string]: typeof HideDirective | typeof ForEachDirective | typeof SubscribeDirective } = {
+        hide: HideDirective,
+        foreach: ForEachDirective,
+        subscribe: SubscribeDirective,
+    }
 
-    constructor (element: Element, context: Element ) {
+    constructor (element: HTMLElement, context: BaseElement ) {
         this.element = element
         this.context = context
         this.finalElement = this.analyseTree(this.element)
     }
 
-    hide(rootElement: Element) {
-        (new HideDirective(rootElement, this.context)).render()
-    }
-
-    foreach(rootElement: Element) {
-        (new ForEachDirective(rootElement, this.context)).render()
-    }
-
-    subscribe(rootElement: Element) {
-        (new SubscribeDirective(rootElement, this.context)).render()
-    }
-
-    analyseTree(parent: Element): Element {
+    analyseTree(parent: HTMLElement): HTMLElement {
         for (const attributeName of parent.getAttributeNames()) {
             console.log(attributeName);
             if (attributeName.startsWith('data-')) {
                 const method = attributeName.split('data-');
-                if (method[1] && this[method[1]]) {
-                    this[method[1]](parent)
+                if (method[1] && Object.keys(this.directives).includes(method[1])) {
+                    (new this.directives[method[1]](parent, this.context)).render()
                 }
             }
         }
 
         for (const child of parent.children) {
-            this.analyseTree(child)
+            this.analyseTree(child as BaseElement)
         }
 
         return parent;

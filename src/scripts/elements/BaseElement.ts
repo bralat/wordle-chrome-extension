@@ -1,11 +1,11 @@
 import Directive from "../directives/Directive";
+import { SubscriberType } from "../types/SubscriberType";
 
 export default class BaseElement extends HTMLElement
 {
+  [s: string]: any;
   shadow: ShadowRoot;
-  eventHandlers: {
-    [eventName: string]: (e: Event) => void
-  }
+  eventHandlers: SubscriberType
 
   constructor () {
     super()
@@ -37,15 +37,15 @@ export default class BaseElement extends HTMLElement
     
   }
 
-  runDirectives(element: Element): Element {
+  runDirectives(element: HTMLElement): HTMLElement {
     return (new Directive(element, this)).finalElement
   }
 
-  createEventListeners(element: Element): Element {
+  createEventListeners(element: HTMLElement): HTMLElement {
     return element;
   }
 
-  appendToView(element: HTMLElement): Element {
+  appendToView(element: HTMLElement): HTMLElement {
     this.shadow.appendChild(element)
 
     return element;
