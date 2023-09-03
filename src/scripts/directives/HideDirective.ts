@@ -9,7 +9,6 @@ export class HideDirective implements DirectiveInterface
     hide: Reactive<[]>
 
     constructor(rootElement: HTMLElement, context: BaseElement) {
-        console.log("HERE");
         this.rootElement = rootElement
         this.context = context
         const hideVariable = rootElement.getAttribute('data-hide');
