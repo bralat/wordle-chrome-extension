@@ -19,7 +19,6 @@ export default class Letter
     state: 'tbd',
     positions: []
   }
-  handlers: Array<{}> = [];
 
   constructor(element: HTMLElement) {
     this.element = element;
@@ -45,11 +44,6 @@ export default class Letter
 
   click(selectorPrefix: string = '') {
     (document.querySelector(`${selectorPrefix} button[data-key='${this.letter}']`) as HTMLButtonElement)?.click();
-    this.executeHandlers();
-  }
-
-  executeHandlers() {
-    // this.handlers.forEach((handler: () => void) => handler())
   }
 
   appendState(state: LetterState, position: number) {
@@ -66,8 +60,6 @@ export default class Letter
   }
 
   onClick(fn: () => void) {
-    // append to handlers for programmatic trigger
-    // this.handlers.push(fn);
     // add event listener for physical keyboard trigger
     document.addEventListener('keyup', (event) => {
       if (event.key === this.letter) {

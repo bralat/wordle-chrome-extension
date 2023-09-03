@@ -16,7 +16,6 @@ export default class Column
     this.element = element;
     this.letter = Keyboard.getLetter(this.element.innerHTML);
     this.position = position;
-    // this.refreshState();
     this.state = this.element.getAttribute('data-state') as LetterState;
     if (this.letter) {
         this.letter.appendState(this.state, this.position);
@@ -85,13 +84,11 @@ export default class Column
     this.letter = null;
     Keyboard.backspace();
     this.element.innerHTML = '';
-    // this.element.setAttribute('aria-label', '');
     this.state = 'empty';
     this.mode = 'insert';
   }
 
   set state(state: LetterState) { // TODO: create column state type
-    // this.element.setAttribute('data-state', state);
     this._state = state;
   }
 
