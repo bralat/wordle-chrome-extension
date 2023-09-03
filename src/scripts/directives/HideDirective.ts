@@ -1,13 +1,15 @@
+import BaseElement from "../elements/BaseElement"
+import { DirectiveInterface } from "../types/DirectiveInterface"
 import { Reactive } from "./Reactive"
 
-export class HideDirective
+export class HideDirective implements DirectiveInterface
 {
-    rootElement: Element
-    parentElement: Element
-    context: Element
+    rootElement: HTMLElement
+    context: BaseElement
     hide: Reactive<[]>
 
-    constructor(rootElement: Element, context: Element) {
+    constructor(rootElement: HTMLElement, context: BaseElement) {
+        console.log("HERE");
         this.rootElement = rootElement
         this.context = context
         const hideVariable = rootElement.getAttribute('data-hide');
@@ -30,9 +32,9 @@ export class HideDirective
 
     toggleVisibility() {
         if (this.hide.value) {
-            (this.rootElement as HTMLElement).style.display = 'none';
+            this.rootElement.style.display = 'none';
         } else {
-            (this.rootElement as HTMLElement).style.display = '';
+            this.rootElement.style.display = '';
         }
     }
 }

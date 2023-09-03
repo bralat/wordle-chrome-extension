@@ -2,6 +2,7 @@ import Letter from "./Letter"
 
 export default class Keyboard
 {
+  static [s: string]: any;
   static BACKSPACE_KEY: Letter
   static ENTER_KEY: Letter
   static SPECIAL_KEYS: {[x: string]: string }  = {
