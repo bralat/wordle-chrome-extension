@@ -31,18 +31,12 @@ export default class BaseElement extends HTMLElement
     this.pipeline(this.view, [
       this.createElementFromString,
       this.runDirectives.bind(this),
-      this.createEventListeners,
       this.appendToView.bind(this),
     ])
-    
   }
 
   runDirectives(element: HTMLElement): HTMLElement {
     return (new Directive(element, this)).finalElement
-  }
-
-  createEventListeners(element: HTMLElement): HTMLElement {
-    return element;
   }
 
   appendToView(element: HTMLElement): HTMLElement {

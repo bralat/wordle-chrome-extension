@@ -47,7 +47,7 @@ export default class Board {
     return this.lastFilledRow?.columns.every((column: Column) => column.isState('correct'))
   }
 
-  hasStarted(): Boolean {
+  inProgress(): Boolean {
     return !this.board.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 
