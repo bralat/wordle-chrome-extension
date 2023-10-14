@@ -7,7 +7,7 @@ describe('App.ts', () => {
         global.fetch = jest.fn(() =>
             Promise.resolve({
                 json: () => Promise.resolve([{ word: 'word' }]),
-            } as Response)
+            })
         );
         global.localStorage.getItem = jest.fn(() => {
             return JSON.stringify([
@@ -28,13 +28,13 @@ describe('App.ts', () => {
         global.fetch = jest.fn(() =>
             Promise.resolve({
                 json: () => Promise.resolve([{ word: 'word' }]),
-            } as Response)
+            })
         );
         global.localStorage.getItem = jest.fn(() => null)
         Object.assign(global, {
             chrome: {
                 runtime: {
-                    getURL: (path: string) => 'home/' + path
+                    getURL: (path) => 'home/' + path
                 }
             }
         })
