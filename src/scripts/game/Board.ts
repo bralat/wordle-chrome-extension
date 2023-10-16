@@ -40,7 +40,7 @@ export default class Board {
   }
 
   get lastFilledRow(): Row {
-    return this.rows.toReversed().find((row: Row): Boolean => row?.is('filled')) as Row;
+    return [...this.rows].reverse().find((row: Row): Boolean => row?.is('filled')) as Row;
   }
 
   isComplete(): Boolean {
