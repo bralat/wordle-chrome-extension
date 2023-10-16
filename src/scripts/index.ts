@@ -1,6 +1,4 @@
 import Board from "./game/Board";
-import StartButtonElement from "./elements/StartButtonElement"
-import WordSelectorElement from "./elements/WordSelectorElement"
 import App from "./App";
 import Keyboard from "./game/Keyboard";
 
@@ -18,9 +16,7 @@ App.ready().then(() => {
     return;
   }
 
-  const startButton: StartButtonElement = new StartButtonElement;
-  const wordSelector: WordSelectorElement = new WordSelectorElement;
-  const app: App = new App(startButton, wordSelector, board);
+  const app: App = new App(board);
 
   Keyboard.ENTER_KEY.onClick(() => app.reset())
 })

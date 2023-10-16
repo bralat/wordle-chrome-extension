@@ -17,12 +17,10 @@ export default class App {
   protected board: Board
 
   constructor(
-    button: StartButtonElement,
-    wordSelector: WordSelectorElement,
     board: Board
   ) {
-    this.button = new WrapperElement(button);
-    this.wordSelector = new WrapperElement(wordSelector);
+    this.button = new WrapperElement(new StartButtonElement);
+    this.wordSelector = new WrapperElement(new WordSelectorElement);
     this.board = board
 
     // initialise predictor
@@ -73,22 +71,34 @@ export default class App {
     })
   }
 
+  removeView() {
+    this.wordSelector.remove()
+    this.button.remove()
+  }
+
+  appendView() {
+    this.board.appendToEmptyRow(this.wordSelector, 80)
+    this.board.appendToEmptyRow(this.button, 10)
+  }
+
+  runPrediction() {
+    this.predictor = new Predictor();
+    this.wordSelector.element.hideNote();
+    this.wordSelector.element.words = this.predictor.predict()
+  }
+
   reset() {
     clearTimeout(this.appTimeout);
     this.appTimeout = setTimeout(() => {
-      this.wordSelector.remove()
-      this.button.remove()
+      this.removeView()
 
       if (this.board.isComplete()) {
         clearTimeout(this.appTimeout);
         return;
       }
 
-      this.predictor = new Predictor();
-      this.wordSelector.element.hideNote();
-      this.wordSelector.element.words = this.predictor.predict()
-      this.board.appendToEmptyRow(this.wordSelector, 80)
-      this.board.appendToEmptyRow(this.button, 10)
+      this.runPrediction()
+      this.appendView()
     }, 3000)
   }
 
@@ -120,8 +130,7 @@ export default class App {
       ];
     }
 
-    this.initEventListeners();
-    this.board.appendToEmptyRow(this.wordSelector, 80)
-    this.board.appendToEmptyRow(this.button, 10)
+    this.initEventListeners()
+    this.appendView()
   }
 }
