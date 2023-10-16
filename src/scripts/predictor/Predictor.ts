@@ -13,6 +13,13 @@ export default class Predictor
     positions: Position[] = []
     rules: WordRule[] = []
     static _dictionary: DictionaryType[]
+    static starterWords = [
+        { word: 'adieu' },
+        { word: 'about' },
+        { word: 'react' },
+        { word: 'later' },
+        { word: 'roast' },
+    ]
 
     constructor() {
         this.positions = [...Array(5)].map(() => new Position);

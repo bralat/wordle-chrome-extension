@@ -121,13 +121,7 @@ export default class App {
     } else {
       // set starter words
       // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
-      this.wordSelector.element.words = [
-        { word: 'adieu' },
-        { word: 'about' },
-        { word: 'react' },
-        { word: 'later' },
-        { word: 'roast' },
-      ];
+      this.wordSelector.element.words = Predictor.starterWords;
     }
 
     this.initEventListeners()
