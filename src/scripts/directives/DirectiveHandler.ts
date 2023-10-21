@@ -3,12 +3,12 @@ import { HideDirective } from "./HideDirective"
 import { SubscribeDirective } from "./SubscribeDirective"
 import BaseElement from "../elements/BaseElement"
 
-export default class Directive
+export default class DirectiveHandler
 {
     element: HTMLElement
     context: BaseElement
     finalElement: HTMLElement
-    directives: {[d: string]: typeof HideDirective | typeof ForEachDirective | typeof SubscribeDirective } = {
+    static directives: {[d: string]: typeof HideDirective | typeof ForEachDirective | typeof SubscribeDirective } = {
         hide: HideDirective,
         foreach: ForEachDirective,
         subscribe: SubscribeDirective,
@@ -24,8 +24,8 @@ export default class Directive
         for (const attributeName of parent.getAttributeNames()) {
             if (attributeName.startsWith('data-')) {
                 const method = attributeName.split('data-');
-                if (method[1] && Object.keys(this.directives).includes(method[1])) {
-                    (new this.directives[method[1]](parent, this.context)).render()
+                if (method[1] && Object.keys(DirectiveHandler.directives).includes(method[1])) {
+                    (new DirectiveHandler.directives[method[1]](parent, this.context)).render()
                 }
             }
         }
