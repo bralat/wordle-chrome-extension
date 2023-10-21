@@ -1,5 +1,6 @@
 import { ForEachDirective } from "@/src/scripts/Directives/ForEachDirective"
 import Reactive from "@/src/scripts/Directives/Reactive"
+import DirectiveHandler from "@/src/scripts/Directives/DirectiveHandler"
 
 let element;
 
@@ -60,5 +61,29 @@ describe('Directives/ForEachDirective', () => {
         itemElems.forEach((itemElem, index) => {
             expect(itemElem.innerHTML).toEqual(expect.stringContaining(`item${index+1}`))
         })
+    });
+});
+
+describe('Directives/DirectiveHandler', () => {
+    it('asserts that DirectiveHandler calls hideDirective', () => {
+        // Given
+        element = document.createElement('div');
+        element.innerHTML = `
+            <div class="item-to-duplicate" data-foreach="item in items">
+                <p>{{item.name}}</p>
+            </div>
+        `;
+        const render = jest.fn();
+        DirectiveHandler.directives = {
+            foreach: class {
+                render () { render() }
+            }
+        }
+
+        // When
+        new DirectiveHandler(element, new class {});
+
+        // Then
+        expect(render).toHaveBeenCalledTimes(1);
     });
 });

@@ -1,5 +1,6 @@
 import { HideDirective } from "@/src/scripts/Directives/HideDirective"
 import Reactive from "@/src/scripts/Directives/Reactive"
+import DirectiveHandler from "@/src/scripts/Directives/DirectiveHandler"
 
 let element;
 
@@ -68,4 +69,29 @@ describe('Directives/HideDirective', () => {
         // Then
         expect(element.querySelector('#item-to-hide').getAttribute('data-subscribe')).toBe(null)
     })
+});
+
+
+describe('Directives/DirectiveHandler', () => {
+    it('asserts that DirectiveHandler calls hideDirective', () => {
+        // Given
+        element = document.createElement('div');
+        element.innerHTML = `
+            <div id="item-to-hide" data-hide="shouldHide">
+                <p>item to hide</p>
+            </div>
+        `;
+        const render = jest.fn();
+        DirectiveHandler.directives = {
+            hide: class {
+                render () { render() }
+            }
+        }
+
+        // When
+        new DirectiveHandler(element, new class {});
+
+        // Then
+        expect(render).toHaveBeenCalledTimes(1);
+    });
 });
