@@ -65,7 +65,7 @@ describe('Directives/ForEachDirective', () => {
 });
 
 describe('Directives/DirectiveHandler', () => {
-    it('asserts that DirectiveHandler calls hideDirective', () => {
+    it('asserts that DirectiveHandler calls ForEachDirective', () => {
         // Given
         element = document.createElement('div');
         element.innerHTML = `

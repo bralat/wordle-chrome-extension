@@ -1,7 +1,7 @@
 import WordRule from "@/src/scripts/predictor/WordRule"
 
-describe('LetterRule', () => {
-    it('it satisfies "mustHave" rule if word contains the letter', () => {
+describe('Predictor/WordRule', () => {
+    it('satisfies "mustHave" rule if word contains the letter', () => {
         // Given
         const wordRule = new WordRule();
         wordRule.mustHave('A');
@@ -13,7 +13,7 @@ describe('LetterRule', () => {
         expect(doesItMatch).toBe(true);
     });
 
-    it('it does not satisfy "mustHave" rule if word does not contain the letter', () => {
+    it('does not satisfy "mustHave" rule if word does not contain the letter', () => {
         // Given
         const wordRule = new WordRule();
         wordRule.mustHave('Z');
@@ -25,7 +25,7 @@ describe('LetterRule', () => {
         expect(doesItMatch).toBe(false);
     });
 
-    it('it satisfies "mustNotHave" rule if word does not contain the letter', () => {
+    it('satisfies "mustNotHave" rule if word does not contain the letter', () => {
         // Given
         const wordRule = new WordRule();
         wordRule.mustNotHave('Z');
@@ -37,7 +37,7 @@ describe('LetterRule', () => {
         expect(doesItMatch).toBe(true);
     });
 
-    it('it does not satisfy "mustNotHave" rule if word contains the letter', () => {
+    it('does not satisfy "mustNotHave" rule if word contains the letter', () => {
         // Given
         const wordRule = new WordRule();
         wordRule.mustNotHave('A');

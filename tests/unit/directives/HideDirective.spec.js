@@ -73,7 +73,7 @@ describe('Directives/HideDirective', () => {
 
 
 describe('Directives/DirectiveHandler', () => {
-    it('asserts that DirectiveHandler calls hideDirective', () => {
+    it('asserts that DirectiveHandler calls HideDirective', () => {
         // Given
         element = document.createElement('div');
         element.innerHTML = `

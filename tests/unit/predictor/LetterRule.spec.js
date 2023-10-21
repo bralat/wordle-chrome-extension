@@ -1,6 +1,6 @@
 import LetterRule from "@/src/scripts/predictor/LetterRule"
 
-describe('LetterRule', () => {
+describe('Predictor/LetterRule', () => {
     it('satisfies "is" rule if letter matches', () => {
         // Given
         const letterRule = new LetterRule();
@@ -25,7 +25,7 @@ describe('LetterRule', () => {
         expect(doesItMatch).toBe(false);
     });
 
-    it('it satisfies "isNot" rule if letter does not match', () => {
+    it('satisfies "isNot" rule if letter does not match', () => {
         // Given
         const letterRule = new LetterRule();
         letterRule.isNot('A');
@@ -37,7 +37,7 @@ describe('LetterRule', () => {
         expect(doesItMatch).toBe(true);
     });
 
-    it('it does not satisfy "isNot" rule if letter matches', () => {
+    it('does not satisfy "isNot" rule if letter matches', () => {
         // Given
         const letterRule = new LetterRule();
         letterRule.isNot('A');
