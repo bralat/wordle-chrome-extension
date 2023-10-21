@@ -52,4 +52,20 @@ describe('Directives/HideDirective', () => {
         // Then
         expect(element.querySelector('#item-to-hide').style.display).toBe('')
     });
+
+    it('removes directive attribute when done rendering', () => {
+        // Given
+        const context = new class {
+            constructor () {
+                this.shouldHide = new Reactive(true);
+            }
+        }
+
+        // When
+        const directive = new HideDirective(element.firstElementChild, context)
+        directive.render()
+
+        // Then
+        expect(element.querySelector('#item-to-hide').getAttribute('data-subscribe')).toBe(null)
+    })
 });
