@@ -1,4 +1,4 @@
-import Directive from "../directives/Directive";
+import DirectiveHandler from "../directives/DirectiveHandler";
 import { SubscriberType } from "../types/SubscriberType";
 
 export default class BaseElement extends HTMLElement
@@ -36,7 +36,7 @@ export default class BaseElement extends HTMLElement
   }
 
   runDirectives(element: HTMLElement): HTMLElement {
-    return (new Directive(element, this)).finalElement
+    return (new DirectiveHandler(element, this)).finalElement
   }
 
   appendToView(element: HTMLElement): HTMLElement {
