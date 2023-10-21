@@ -44,7 +44,7 @@ describe('Directives/SubscribeDirective', () => {
 });
 
 describe('Directives/DirectiveHandler', () => {
-    it('asserts that DirectiveHandler calls hideDirective', () => {
+    it('asserts that DirectiveHandler calls SubscribeDirective', () => {
         // Given
         element = document.createElement('div');
         element.innerHTML = `

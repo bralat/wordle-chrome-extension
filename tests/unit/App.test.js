@@ -1,16 +1,15 @@
-import { describe, expect, test, fixture } from '@jest/globals';
-import App from "../../src/scripts/App";
-import Board from '../../src/scripts/game/Board';
+import App from "@/src/scripts/App";
+import Board from '@/src/scripts/game/Board';
 import mockView from '../fixtures/mockView.js';
 import mockDictionary from '../fixtures/mockDictionary';
-import Predictor from '../../src/scripts/predictor/Predictor';
+import Predictor from '@/src/scripts/predictor/Predictor';
 
 describe('App.ts', () => {
     beforeAll(() => {
         jest.useFakeTimers();
     });
 
-    test('it should get dictionary from storage if already loaded', () => {
+    it('should get dictionary from storage if already loaded', () => {
         // Given
         global.fetch = jest.fn(() =>
             Promise.resolve({
@@ -31,7 +30,7 @@ describe('App.ts', () => {
         expect(global.fetch).not.toHaveBeenCalled()
     });
 
-    test('it should get dictionary via http request', () => {
+    it('should get dictionary via http request', () => {
         // Given
         global.fetch = jest.fn(() =>
             Promise.resolve({
@@ -55,7 +54,7 @@ describe('App.ts', () => {
         expect(global.fetch).toHaveBeenCalled()
     })
 
-    test('it should update predictions when reset', () => {
+    it('should update predictions when reset', () => {
         // Given
         document.body.innerHTML = mockView;
         localStorage.setItem('words', JSON.stringify(mockDictionary));
@@ -75,7 +74,7 @@ describe('App.ts', () => {
         expect(app.wordSelector.element._words.value).not.toBe(currentWords);
     })
 
-    test('it should use starter words if it\'s a new game', () => {
+    it('should use starter words if it\'s a new game', () => {
         document.body.innerHTML = mockView;
         localStorage.setItem('words', JSON.stringify(mockDictionary));
         const board = new Board({
