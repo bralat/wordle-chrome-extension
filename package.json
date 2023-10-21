@@ -20,6 +20,7 @@
         "@rollup/plugin-terser": "^0.4.3",
         "@rollup/plugin-typescript": "^11.1.0",
         "@rollup/stream": "^3.0.0",
+        "@testing-library/dom": "^9.3.3",
         "@types/chrome": "^0.0.235",
         "@types/jest": "^29.5.5",
         "@types/node": "^20.5.1",
