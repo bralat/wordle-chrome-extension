@@ -1,5 +1,6 @@
 import { SubscribeDirective } from "@/src/scripts/Directives/SubscribeDirective"
 import { fireEvent } from '@testing-library/dom';
+import DirectiveHandler from "@/src/scripts/Directives/DirectiveHandler"
 
 let element;
 
@@ -39,5 +40,29 @@ describe('Directives/SubscribeDirective', () => {
         expect(clickHandler).toHaveBeenCalledTimes(1)
         expect(mouseOverHandler).toHaveBeenCalledTimes(1)
         expect(itemToListenTo.getAttribute('data-subscribe')).toBe(null)
+    });
+});
+
+describe('Directives/DirectiveHandler', () => {
+    it('asserts that DirectiveHandler calls hideDirective', () => {
+        // Given
+        element = document.createElement('div');
+        element.innerHTML = `
+            <div id="item-to-listen-to" data-subscribe="eventHandlers">
+                <p>item to listen to</p>
+            </div>
+        `;
+        const render = jest.fn();
+        DirectiveHandler.directives = {
+            subscribe: class {
+                render () { render() }
+            }
+        }
+
+        // When
+        new DirectiveHandler(element, new class {});
+
+        // Then
+        expect(render).toHaveBeenCalledTimes(1);
     });
 });
