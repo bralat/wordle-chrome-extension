@@ -1,6 +1,6 @@
 import BaseElement from "../elements/BaseElement"
 import { DirectiveInterface } from "../types/DirectiveInterface"
-import { Reactive } from "./Reactive"
+import Reactive from "./Reactive"
 
 export class ForEachDirective implements DirectiveInterface
 {

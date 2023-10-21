@@ -1,4 +1,4 @@
-export class Reactive<T>
+export default class Reactive<T>
 {
     _value: T;
     _effect?: (value: any) => void
