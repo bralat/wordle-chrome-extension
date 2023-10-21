@@ -6,6 +6,9 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     "\\.jsx?$": "babel-jest"
+  },
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/$1"
   }
 };
 
