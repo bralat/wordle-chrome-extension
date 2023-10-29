@@ -1,6 +1,5 @@
 import Row from "./Row"
 import WrapperElement from "../elements/WrapperElement"
-import { BoardSelectors } from "../types/BoardSelectors"
 import Column from "./Column"
 
 /**
@@ -10,25 +9,19 @@ export default class Board {
   element: HTMLElement
   rows: Array<Row>;
   static MAX_ROWS = 6
-  selectors: BoardSelectors
+  static selector: string = '.Board-module_boardContainer__TBHNL'
 
-  constructor(selectors: BoardSelectors) {
-    this.selectors = selectors
-    this.rows = Array(Board.MAX_ROWS);
-    this.element = document.querySelector(this.selectors.board) as HTMLElement;
+  constructor() {
+    this.element = document.querySelector(Board.selector) as HTMLElement;
     this.initState();
   }
 
   // TODO: run when certain DOM events are triggered
   initState() {
-    const rowElems = this.element.querySelectorAll(this.selectors.row);
-    rowElems.forEach((rowElem: HTMLElement, rowIndex: number) => {
-      const row = new Row(rowElem);
-      rowElem.querySelectorAll(this.selectors.column).forEach(
-        (columnElem: HTMLElement, position: number) => row.columns.push(new Column(columnElem, position))
-      );
-      this.rows[rowIndex] = row;
-    })
+    this.rows = Array.from(
+        this.element.querySelectorAll(Row.selector)
+      )
+      .map((rowElem: HTMLElement) => new Row(rowElem))
   }
 
   get loaded (): Boolean {

@@ -11,6 +11,7 @@ export default class Column
   protected _state: LetterState = 'tbd'
   position: number
   observer: MutationObserver
+  static selector: string = 'div.Tile-module_tile__UWEHN'
 
   constructor(element: HTMLElement, position: number) {
     this.element = element;
