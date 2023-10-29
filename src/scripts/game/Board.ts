@@ -1,6 +1,6 @@
 import Row from "./Row"
-import WrapperElement from "../elements/WrapperElement"
 import Column from "./Column"
+import BaseElement from "../elements/BaseElement";
 
 /**
  * Stores the current state of the game
@@ -39,18 +39,18 @@ export default class Board {
     return this.rows.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 
-  appendToRow(row: Row, wrapper: WrapperElement, offset: number) {
+  appendToRow(row: Row, element: BaseElement, offset: number) {
     // get the position
     const boundRect: DOMRect = row.element.getBoundingClientRect()
     // append button to row
-    wrapper.element.style.position = 'absolute';
-    wrapper.element.style.top = `${boundRect.top + 5}px`;
-    wrapper.element.style.left = `${boundRect.right + offset}px`;
+    element.style.position = 'absolute';
+    element.style.top = `${boundRect.top + 5}px`;
+    element.style.left = `${boundRect.right + offset}px`;
 
-    document.body.appendChild(wrapper);
+    document.body.appendChild(element);
   }
 
-  appendToEmptyRow(element: WrapperElement, offset: number) {
+  appendToEmptyRow(element: BaseElement, offset: number) {
     this.appendToRow(this.nextRow, element, offset);
   }
 }

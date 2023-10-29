@@ -126,4 +126,12 @@ describe('Elements/BaseElement', () => {
         expect(element.runDirectives).toHaveBeenCalledTimes(1);
         expect(element.appendToView).toHaveBeenCalledTimes(1);
     })
+
+    // TODO: test isVisible
+
+    // TODO: test hide
+
+    // TODO: test show
+
+    // TODO: test toggle
 });
