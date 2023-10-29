@@ -63,27 +63,6 @@ export default class Column
     return this._letter
   }
 
-  insert(letter: Letter|string) {
-    this.mode = 'insert';
-    this.letter = letter instanceof Letter ? letter: Keyboard.getLetter(letter);
-    this.letter.click();
-    this.setUpObserver()
-  }
-
-  hint(letter: Letter|string) {
-    this.mode = 'hint';
-    this.element.innerHTML = letter instanceof Letter ? letter.letter : letter;
-    this.element.setAttribute('aria-label', this.element.innerHTML);
-  }
-
-  clear () {
-    this.letter = null;
-    Keyboard.backspace();
-    this.element.innerHTML = '';
-    this.state = 'empty';
-    this.mode = 'insert';
-  }
-
   set state(state: LetterState) { // TODO: create column state type
     this._state = state;
   }
@@ -100,5 +79,26 @@ export default class Column
     } else {
       this.element.style.opacity = '1';
     }
+  }
+
+  insert(letter: Letter|string) {
+    this.mode = 'insert';
+    this.letter = letter instanceof Letter ? letter: Keyboard.getLetter(letter);
+    this.letter.click();
+    this.setUpObserver()
+  }
+
+  hint(letter: Letter|string) {
+    this.mode = 'hint';
+    this.element.innerHTML = letter instanceof Letter ? letter.letter : letter;
+    this.element.setAttribute('aria-label', this.element.innerHTML);
+  }
+
+  clear () {
+    this._letter = null;
+    Keyboard.backspace();
+    this.element.innerHTML = '';
+    this.state = 'empty';
+    this.mode = 'insert';
   }
 }
