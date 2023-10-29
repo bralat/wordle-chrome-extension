@@ -18,7 +18,7 @@ export default class Column
     this.position = position;
     this.state = this.element.getAttribute('data-state') as LetterState;
     if (this.letter) {
-        this.letter.appendState(this.state, this.position);
+      this.letter.appendState(this.state, this.position);
     }
 
     this.setUpObserver()
@@ -31,12 +31,12 @@ export default class Column
 
     this.observer = new MutationObserver((mutationList, observer) => {
         mutationList.forEach((mutation: MutationRecord) => {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'data-state') {
-                if (Keyboard.alphabet.includes(mutation.target.textContent)) {
-                    this.letter = Keyboard.getLetter(mutation.target.textContent);
-                }
-                this.refreshState()
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-state') {
+            if (Keyboard.alphabet.includes(mutation.target.textContent)) {
+              this.letter = Keyboard.getLetter(mutation.target.textContent);
             }
+            this.refreshState()
+          }
         })
     });
 
@@ -45,7 +45,7 @@ export default class Column
 
   refreshState() {
     if (this.letter) {
-        this.letter.appendState(this.state, this.position);
+      this.letter.appendState(this.state, this.position);
     }
   }
 
@@ -61,10 +61,6 @@ export default class Column
 
   get letter () {
     return this._letter
-  }
-
-  isMode(mode: InsertModeType): Boolean {
-    return this._mode === mode;
   }
 
   insert(letter: Letter|string) {
@@ -98,14 +94,11 @@ export default class Column
   }
 
   set mode(state: InsertModeType) {
+    this._mode = state;
     if (state === 'hint') {
       this.element.style.opacity = '0.5';
     } else {
       this.element.style.opacity = '1';
     }
-  }
-
-  isPriorityLowerThan(state: LetterState) {
-    return Letter.statePriority[this.state] < Letter.statePriority[state]
   }
 }
