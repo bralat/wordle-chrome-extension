@@ -19,12 +19,10 @@ let dest = devDest;
 let env = {};
 gulp.task('set-dest-build', (done) => {
   dest = buildDest
-  env.GTAG_ID = 'G-38WQ4XL12W';
   done()
 })
 gulp.task('set-dest-dev', (done) => {
   dest = devDest
-  env.GTAG_ID = 'G-YZ7DE2X8NP';
   done()
 })
 
@@ -49,7 +47,6 @@ gulp.task('build-js', gulp.series(function() {
       output: { format: 'iife'}
     })
     .pipe(source('content.js'))
-    // .pipe(replace('${window.GTAG_ID}', env.GTAG_ID))
     .pipe(buffer())
     .pipe(gulp.dest(buildDest+'/scripts'))
 }));
@@ -84,7 +81,6 @@ gulp.task('copy-assets', gulp.series(function() {
 gulp.task('copy-third-party-scripts', gulp.series(function() {
   return gulp.src([
     './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-    // `src/third-party-scripts/gtag_${dest}/gtag.js`,
   ])
   .pipe(gulp.dest(dest+'/scripts'))
 }));
