@@ -1,6 +1,6 @@
-import { ForEachDirective } from "@/src/scripts/Directives/ForEachDirective"
-import Reactive from "@/src/scripts/Directives/Reactive"
-import DirectiveHandler from "@/src/scripts/Directives/DirectiveHandler"
+import { ForEachDirective } from "@/scripts/Directives/ForEachDirective"
+import Reactive from "@/scripts/Directives/Reactive"
+import DirectiveHandler from "@/scripts/Directives/DirectiveHandler"
 
 let element;
 

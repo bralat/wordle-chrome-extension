@@ -1,4 +1,4 @@
-import Letter from "@/src/scripts/game/Letter";
+import Letter from "@/scripts/game/Letter";
 
 describe('Game/Letter', () => {
     let element;

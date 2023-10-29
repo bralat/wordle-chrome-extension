@@ -1,6 +1,6 @@
-import { HideDirective } from "@/src/scripts/Directives/HideDirective"
-import Reactive from "@/src/scripts/Directives/Reactive"
-import DirectiveHandler from "@/src/scripts/Directives/DirectiveHandler"
+import { HideDirective } from "@/scripts/Directives/HideDirective"
+import Reactive from "@/scripts/Directives/Reactive"
+import DirectiveHandler from "@/scripts/Directives/DirectiveHandler"
 
 let element;
 
