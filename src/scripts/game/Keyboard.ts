@@ -11,7 +11,8 @@ export default class Keyboard
   }
 
   static element: HTMLElement
-  static keyboardClass: string = '.Keyboard-module_keyboard__uYuqf'
+  static keyboardSelector: string = '.Keyboard-module_keyboard__uYuqf'
+  static keySelector: string = 'button.Key-module_key__kchQI'
   static _letters: Letter[] = []
   
   // states
@@ -22,8 +23,8 @@ export default class Keyboard
 
   static categoriseLetters () {
     Keyboard._letters = [];
-    Keyboard.element = document.querySelector(Keyboard.keyboardClass) as HTMLElement;
-    Keyboard.element.querySelectorAll('button.Key-module_key__kchQI').forEach((elem: HTMLElement) => {
+    Keyboard.element = document.querySelector(Keyboard.keyboardSelector) as HTMLElement;
+    Keyboard.element.querySelectorAll(Keyboard.keySelector).forEach((elem: HTMLElement) => {
       const letter: Letter = new Letter(elem);
       let specialKey;
       if (Keyboard.alphabet.includes(letter.letter)) {
@@ -35,11 +36,12 @@ export default class Keyboard
   }
 
   static hit (letter: Letter) {
-    letter.click(this.keyboardClass);
+    letter.click(this.keyboardSelector);
   }
 
   static get letters (): Letter[] {
     if (Keyboard._letters.length === 0) {
+      console.log('here');
       Keyboard.categoriseLetters()
     }
 
@@ -60,20 +62,5 @@ export default class Keyboard
 
   static get alphabet(): string[] {
     return ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-  }
-
-  static onKey(key: Letter, fn: () => void) {
-    document.addEventListener('keyup', (event) => {
-      if (event.key === key.letter) {
-        fn();
-      }
-    });
-    // TODO: also listen for when the keys are triggered programatically
-  }
-
-  static LettersWithState(state: string): Letter[] {
-    return Keyboard.letters.filter(
-      (letter: Letter) => letter.state === state
-    );
   }
 }
