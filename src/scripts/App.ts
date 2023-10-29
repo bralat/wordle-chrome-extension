@@ -1,6 +1,5 @@
 import StartButtonElement from "./elements/StartButtonElement"
 import WordSelectorElement from "./elements/WordSelectorElement"
-import WrapperElement from "./elements/WrapperElement"
 import Board from "./game/Board"
 import Predictor from "./predictor/Predictor"
 import { VariableArgumentsType } from "./types/VariableArgumentsType"
@@ -9,8 +8,8 @@ import { VariableArgumentsType } from "./types/VariableArgumentsType"
  * Stores the current state of the game
  */
 export default class App {
-  protected readonly button: WrapperElement
-  protected readonly wordSelector: WrapperElement
+  protected readonly button: StartButtonElement
+  protected readonly wordSelector: WordSelectorElement
   protected predictor: Predictor
   protected static gTagLoaded: Boolean = true
   protected appTimeout: ReturnType<typeof setTimeout>
@@ -19,8 +18,8 @@ export default class App {
   constructor(
     board: Board
   ) {
-    this.button = new WrapperElement(new StartButtonElement);
-    this.wordSelector = new WrapperElement(new WordSelectorElement);
+    this.button = new StartButtonElement;
+    this.wordSelector = new WordSelectorElement;
     this.board = board
 
     // initialise predictor
@@ -83,8 +82,8 @@ export default class App {
 
   runPrediction() {
     this.predictor = new Predictor();
-    this.wordSelector.element.hideNote();
-    this.wordSelector.element.words = this.predictor.predict()
+    this.wordSelector.hideNote();
+    this.wordSelector.words = this.predictor.predict()
   }
 
   reset() {
@@ -118,10 +117,9 @@ export default class App {
     if (this.board.isEmpty) {
       // set starter words
       // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
-      this.wordSelector.element.words = Predictor.starterWords;
+      this.wordSelector.words = Predictor.starterWords;
     } else {
-      this.wordSelector.element.hideNote();
-      this.wordSelector.element.words = this.predictor.predict();
+      this.runPrediction();
     }
 
     this.initEventListeners()

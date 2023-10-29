@@ -53,4 +53,21 @@ export default class BaseElement extends HTMLElement
 
     return result
   }
+
+  get isVisible(): boolean {
+    return !(this.style.display && this.style.display === 'none')
+  }
+
+  hide () {
+    // set display of custom element to none
+    this.style.display = 'none';
+  }
+
+  show () {
+    this.style.display = null;
+  }
+
+  toggleDisplay() {
+    this.style.display = this.isVisible ? 'none' : null;
+  }
 }
