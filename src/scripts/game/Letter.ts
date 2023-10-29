@@ -22,7 +22,7 @@ export default class Letter
 
   constructor(element: HTMLElement) {
     this.element = element;
-    this.statePosition.state = this.element.getAttribute('data-state') as LetterState || 'tbd';
+    this.statePosition.state = this.element.getAttribute('data-state') as LetterState;
     this.letter = this.element.getAttribute('data-key') as string;
   }
 
@@ -43,7 +43,8 @@ export default class Letter
   }
 
   click(selectorPrefix: string = '') {
-    (document.querySelector(`${selectorPrefix} button[data-key='${this.letter}']`) as HTMLButtonElement)?.click();
+    // (document.querySelector(`${selectorPrefix} button[data-key='${this.letter}']`) as HTMLButtonElement)?.click();
+    this.element?.click();
   }
 
   appendState(state: LetterState, position: number) {
