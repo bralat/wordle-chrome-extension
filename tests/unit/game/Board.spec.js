@@ -6,8 +6,6 @@ jest.mock('@/scripts/game/Keyboard')
 jest.mock('@/scripts/game/Row')
 
 describe('Game/Board', () => {
-    let element;
-
     beforeEach(() => {
         document.body.innerHTML = `
             <div class="Board-module_boardContainer__TBHNL" style="overflow: unset;">
@@ -95,7 +93,6 @@ describe('Game/Board', () => {
     it('returns true if game has not been started', () => {
         // Given
         const board = new Board();
-        // mock is on each row to return true
         board.rows.forEach(row => {
             row.is.mockReturnValue(true);
         });
@@ -116,7 +113,45 @@ describe('Game/Board', () => {
         expect(board.isEmpty).toBe(false);
     });
 
-    // TODO: test appendRow
+    it('appends element to the DOM', () => {
+        // Given
+        const board = new Board();
+        board.rows[0].element = document.createElement('div');
+        jest.spyOn(board.rows[0].element, 'getBoundingClientRect').mockReturnValue({
+            top: 50,
+            right: 50
+        });
+        const spy = jest.spyOn(document.body, 'appendChild');
 
-    // TODO: test appendToEmptyRow
+        // When
+        const element = document.createElement('div');
+        board.appendToRow(board.rows[0], element, 10);
+
+        // Then
+        expect(element.style.top).toBe('55px');
+        expect(element.style.left).toBe('60px');
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('appends element to the first empty row', () => {
+        // Given
+        const board = new Board();
+        board.rows[0].is.mockReturnValue(false);
+        board.rows[1].is.mockReturnValue(true);
+        board.rows[1].element = document.createElement('div');
+        jest.spyOn(board.rows[1].element, 'getBoundingClientRect').mockReturnValue({
+            top: 50,
+            right: 50
+        });
+        const spy = jest.spyOn(document.body, 'appendChild');
+
+        // When
+        const element = document.createElement('div');
+        board.appendToEmptyRow(element, 10);
+
+        // Then
+        expect(element.style.top).toBe('55px');
+        expect(element.style.left).toBe('60px');
+        expect(spy).toHaveBeenCalled();
+    })
 });
