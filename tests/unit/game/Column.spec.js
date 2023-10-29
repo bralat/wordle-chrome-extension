@@ -161,4 +161,20 @@ describe('Game/Column', () => {
         // Then
         expect(column.element.style.opacity).toBe('1');
     });
+
+    it('clears the column', () => { 
+        // Given
+        const column = new Column(element.firstElementChild, 2);
+        Keyboard.backspace = jest.fn();
+
+        // When
+        column.clear();
+
+        // Then
+        expect(column.letter).toBe(null);
+        expect(column._state).toBe('empty');
+        expect(column.element.innerHTML).toBe('');
+        expect(column._mode).toBe('insert');
+        expect(Keyboard.backspace).toHaveBeenCalled();
+    })
 });
