@@ -1,12 +1,10 @@
 import { RowState } from "../types/RowState";
-import Board from "./Board";
 import Column from "./Column";
 import Keyboard from "./Keyboard";
 
 export default class Row
 {
   columns: Column[] = [];
-  isValid = true;
   element: HTMLElement
   static selector: string = '.Row-module_row__pwpBq'
 
