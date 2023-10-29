@@ -8,7 +8,7 @@ const config: Config.InitialOptions = {
     "\\.jsx?$": "babel-jest"
   },
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/$1"
+    "^@/(.*)$": "<rootDir>/src/$1"
   }
 };
 

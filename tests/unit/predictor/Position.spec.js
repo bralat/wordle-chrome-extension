@@ -1,5 +1,5 @@
-import Position from '@/src/scripts/predictor/Position'
-import LetterRule from "@/src/scripts/predictor/LetterRule"
+import Position from '@/scripts/predictor/Position'
+import LetterRule from "@/scripts/predictor/LetterRule"
 
 let position;
 describe ('Predictor/Position', () => {

@@ -1,8 +1,8 @@
-import App from "@/src/scripts/App";
-import Board from '@/src/scripts/game/Board';
+import App from "@/scripts/App";
+import Board from '@/scripts/game/Board';
 import mockView from '../fixtures/mockView.js';
 import mockDictionary from '../fixtures/mockDictionary';
-import Predictor from '@/src/scripts/predictor/Predictor';
+import Predictor from '@/scripts/predictor/Predictor';
 
 describe('App.ts', () => {
     beforeAll(() => {

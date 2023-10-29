@@ -1,4 +1,4 @@
-import LetterRule from "@/src/scripts/predictor/LetterRule"
+import LetterRule from "@/scripts/predictor/LetterRule"
 
 describe('Predictor/LetterRule', () => {
     it('satisfies "is" rule if letter matches', () => {

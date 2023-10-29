@@ -1,6 +1,6 @@
-import { SubscribeDirective } from "@/src/scripts/Directives/SubscribeDirective"
+import { SubscribeDirective } from "@/scripts/Directives/SubscribeDirective"
 import { fireEvent } from '@testing-library/dom';
-import DirectiveHandler from "@/src/scripts/Directives/DirectiveHandler"
+import DirectiveHandler from "@/scripts/Directives/DirectiveHandler"
 
 let element;
 

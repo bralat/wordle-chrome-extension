@@ -1,4 +1,4 @@
-import WordRule from "@/src/scripts/predictor/WordRule"
+import WordRule from "@/scripts/predictor/WordRule"
 
 describe('Predictor/WordRule', () => {
     it('satisfies "mustHave" rule if word contains the letter', () => {
