@@ -55,7 +55,7 @@ export default class BaseElement extends HTMLElement
   }
 
   get isVisible(): boolean {
-    return !(this.style.display && this.style.display === 'none')
+    return this.style.display !== 'none'
   }
 
   hide () {

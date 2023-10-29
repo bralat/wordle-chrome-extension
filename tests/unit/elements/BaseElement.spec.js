@@ -127,11 +127,55 @@ describe('Elements/BaseElement', () => {
         expect(element.appendToView).toHaveBeenCalledTimes(1);
     })
 
-    // TODO: test isVisible
+    it('returns true if element is visible', () => {
+        // Given
+        const element = new BaseElement;
+        element.style.display = 'block';
 
-    // TODO: test hide
+        // When/Then
+        expect(element.isVisible).toBe(true);
+    });
 
-    // TODO: test show
+    it('returns false if element is not visible', () => {
+        // Given
+        const element = new BaseElement;
+        element.style.display = 'none';
 
-    // TODO: test toggle
+        // When/Then
+        expect(element.isVisible).toBe(false);
+    });
+
+    it('sets the display style to none', () => {
+        // Given
+        const element = new BaseElement;
+
+        // When
+        element.hide();
+
+        // Then
+        expect(element.style.display).toBe('none');
+    });
+
+    it('sets the display style to null', () => {
+        // Given
+        const element = new BaseElement;
+
+        // When
+        element.show();
+
+        // Then
+        expect(element.style.display).toBe('');
+    });
+
+    it('toggles the display style', () => {
+        // Given
+        const element = new BaseElement;
+        element.style.display = 'none';
+
+        // When
+        element.toggleDisplay();
+
+        // Then
+        expect(element.style.display).toBe('');
+    });
 });
