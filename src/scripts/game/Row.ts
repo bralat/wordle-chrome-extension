@@ -1,23 +1,25 @@
 import { RowState } from "../types/RowState";
+import Board from "./Board";
 import Column from "./Column";
 import Keyboard from "./Keyboard";
-import Letter from "./Letter"
 
 export default class Row
 {
   columns: Column[] = [];
   isValid = true;
   element: HTMLElement
+  static selector: string = '.Row-module_row__pwpBq'
 
   constructor(element: HTMLElement) {
     this.element = element;
+    this.initState();
   }
 
-  resetValidity() {
-    this.isValid = true;
-    if(this.element.classList.contains('Row-module_invalid__RNDXZ')) {
-      this.isValid = false;
-    }
+  initState() {
+    this.columns = Array.from(
+        this.element.querySelectorAll(Column.selector)
+      )
+      .map((columnElem: HTMLElement, columnIndex: number) => new Column(columnElem, columnIndex))
   }
 
   insertWord(word: string) {
@@ -27,7 +29,6 @@ export default class Row
     });
 
     Keyboard.enter();
-    this.resetValidity();
   }
 
   hintWord(word: string) {
@@ -44,16 +45,12 @@ export default class Row
     this.columns.forEach((column: Column) => column.clear());
   }
 
-  get filledLetters(): Column[] {
+  get filledColumns(): Column[] {
     return this.columns.filter((column: Column) => !(column.isState('empty') || column.isState('tbd')) )
   }
 
-  get emptyLetters(): Column[] {
-    return this.columns.filter((column: Column) => column.isState('empty'))
-  }
-
   get state(): RowState {
-    return this.filledLetters.length > 0 ? 'filled' : 'empty';
+    return this.filledColumns.length > 0 ? 'filled' : 'empty';
   }
 
   get word(): string {

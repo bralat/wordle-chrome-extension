@@ -5,11 +5,7 @@ import Keyboard from "./game/Keyboard";
 App.getDictionary()
 // App.loadGTag()
 App.ready().then(() => {
-  const board = new Board({
-    'board': '.Board-module_boardContainer__TBHNL',
-    'row': '.Row-module_row__pwpBq',
-    'column': 'div.Tile-module_tile__UWEHN'
-  });
+  const board = new Board();
 
   // is game complete
   if (board.isComplete()) {
