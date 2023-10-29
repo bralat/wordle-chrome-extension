@@ -16,16 +16,11 @@ export default class Board {
     this.initState();
   }
 
-  // TODO: run when certain DOM events are triggered
   initState() {
     this.rows = Array.from(
         this.element.querySelectorAll(Row.selector)
       )
       .map((rowElem: HTMLElement) => new Row(rowElem))
-  }
-
-  get loaded (): Boolean {
-    return Boolean(this.element);
   }
 
   get nextRow(): Row {
@@ -40,8 +35,8 @@ export default class Board {
     return this.lastFilledRow?.columns.every((column: Column) => column.isState('correct'))
   }
 
-  inProgress(): Boolean {
-    return !this.rows.every((row: Row): Boolean => row?.is('empty')) as Boolean;
+  get isEmpty(): Boolean {
+    return this.rows.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 
   appendToRow(row: Row, wrapper: WrapperElement, offset: number) {

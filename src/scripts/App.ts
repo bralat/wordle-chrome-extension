@@ -115,13 +115,13 @@ export default class App {
   initExtension () {
     this.wordSelector.hide();
 
-    if (this.board.inProgress()) {
-      this.wordSelector.element.hideNote();
-      this.wordSelector.element.words = this.predictor.predict();
-    } else {
+    if (this.board.isEmpty) {
       // set starter words
       // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
       this.wordSelector.element.words = Predictor.starterWords;
+    } else {
+      this.wordSelector.element.hideNote();
+      this.wordSelector.element.words = this.predictor.predict();
     }
 
     this.initEventListeners()
