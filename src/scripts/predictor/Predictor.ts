@@ -23,7 +23,10 @@ export default class Predictor
 
     constructor() {
         this.positions = [...Array(5)].map(() => new Position);
+        this.setRules()
+    }
 
+    setRules () {
         // set rules for each position based on letter
         Keyboard.letters.forEach((letter: Letter) => {
             if (letter.state === 'correct') {
@@ -43,7 +46,7 @@ export default class Predictor
                 rule.mustHave(letter.letter);
                 this.addRule(rule);
             } else if (letter.state === 'absent') {
-                const rule = new WordRule;
+                const rule: WordRule = new WordRule;
                 rule.mustNotHave(letter.letter);
                 this.addRule(rule);
             }
