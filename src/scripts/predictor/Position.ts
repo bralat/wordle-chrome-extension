@@ -4,8 +4,10 @@ export default class Position
 {
     rules: LetterRule[] = []
 
-    addRule(rule: LetterRule) {
-        this.rules.push(rule)
+    addRule(rule: LetterRule): this {
+        this.rules.push(rule);
+
+        return this;
     }
 
     /**
