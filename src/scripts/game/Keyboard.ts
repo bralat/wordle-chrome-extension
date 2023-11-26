@@ -41,7 +41,6 @@ export default class Keyboard
 
   static get letters (): Letter[] {
     if (Keyboard._letters.length === 0) {
-      console.log('here');
       Keyboard.categoriseLetters()
     }
 
