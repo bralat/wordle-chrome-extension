@@ -8,11 +8,15 @@ export default class LetterRule extends Rule
         super()
     }
 
-    is (originalLetter: string) {
+    is (originalLetter: string): this {
         this.rule = (newLetter: string) => newLetter === originalLetter;
+
+        return this;
     }
 
-    isNot(originalLetter: string) {
+    isNot(originalLetter: string): this {
         this.rule = (newLetter: string) => newLetter !== originalLetter;
+
+        return this;
     }
 }
