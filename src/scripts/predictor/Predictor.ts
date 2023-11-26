@@ -71,26 +71,35 @@ export default class Predictor
         return Predictor._dictionary;
     }
 
+    matchLetters(word: string): Boolean {
+        return word.split('').every((letter: string, index: number) => {
+            return this.positions[index].satisfies(letter)
+        });
+    }
+
     predict(wordCount: number = 5) {
         const matchingWords: PredictedWordInterface[] = [];
 
         let index = 0;
         while(index < Predictor.dictionary.length && matchingWords.length < wordCount) {
-            const word = Predictor.dictionary[index]
+            const word = Predictor.dictionary[index];
+
             // run letter rules
-            const isLetterMatch = word.word.split('').every((letter: string, index: number) => {
-                return this.positions[index].satisfies(letter)
-            });
+            const isLetterMatch = this.matchLetters(word.word);
+            if (!isLetterMatch) {
+                index += 1;
+                continue;
+            }
 
             // run word rules
             const isWordMatch = this.satisfies(word.word);
-
-            if (isLetterMatch && isWordMatch) {
+            if (isWordMatch) {
                 matchingWords.push({
                     word: word.word,
                     accuracy: '100',
                 });
             }
+
             index += 1;
         }
 
