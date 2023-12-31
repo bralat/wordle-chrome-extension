@@ -64,14 +64,14 @@ describe('App.ts', () => {
             'column': 'div.Tile-module_tile__UWEHN'
         });
         const app = new App(board);
-        const currentWords = app.wordSelector.element._words.value;
+        const currentWords = app.wordSelector._words.value;
 
         // When
         app.reset()
         jest.advanceTimersByTime(3000)
 
         // Then
-        expect(app.wordSelector.element._words.value).not.toBe(currentWords);
+        expect(app.wordSelector._words.value).not.toBe(currentWords);
     })
 
     it('should use starter words if it\'s a new game', () => {
@@ -89,6 +89,6 @@ describe('App.ts', () => {
         jest.advanceTimersByTime(3000)
 
         // Then
-        expect(app.wordSelector.element._words.value).toBe(Predictor.starterWords);
+        expect(app.wordSelector._words.value).toBe(Predictor.starterWords);
     })
 })
