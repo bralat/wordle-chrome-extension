@@ -1,6 +1,6 @@
 import App from "@/scripts/App";
 import Board from '@/scripts/game/Board';
-import mockView from '../fixtures/mockView.js';
+import mockView from '../fixtures/mockNewGame.js';
 import mockDictionary from '../fixtures/mockDictionary';
 import Predictor from '@/scripts/predictor/Predictor';
 
@@ -77,6 +77,7 @@ describe('App.ts', () => {
     })
 
     it('should use starter words if it\'s a new game', () => {
+        // Given
         document.body.innerHTML = mockView;
         Storage.prototype.getItem = jest.fn(() => {
             return JSON.stringify(mockDictionary)
@@ -95,4 +96,26 @@ describe('App.ts', () => {
         // Then
         expect(app.wordSelector._words.value).toBe(Predictor.starterWords);
     })
+
+
+    it('should run prediction if it\'s not a new game', () => {
+        // Given
+        document.body.innerHTML = mockView;
+        localStorage.setItem('words', JSON.stringify(mockDictionary));
+        const board = new Board({
+            'board': '.Board-module_boardContainer__TBHNL',
+            'row': '.Row-module_row__pwpBq',
+            'column': 'div.Tile-module_tile__UWEHN'
+        });
+        const app = new App(board);
+        jest.spyOn(Board.prototype, 'isEmpty', 'get').mockReturnValue(false);
+        const runPredictionSpy = jest.spyOn(app, 'runPrediction');
+
+        // When
+        app.initExtension()
+        jest.advanceTimersByTime(3000)
+
+        // Then
+        expect(runPredictionSpy).toHaveBeenCalled();
+    });
 })
