@@ -9,7 +9,10 @@ const config: Config.InitialOptions = {
   },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1"
-  }
+  },
+  setupFiles: [
+    "<rootDir>/tests/jest_setup.js"
+  ],
 };
 
 export default config;
