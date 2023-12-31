@@ -16,7 +16,7 @@ describe('App.ts', () => {
                 json: () => Promise.resolve([{ word: 'word' }]),
             })
         );
-        global.localStorage.getItem = jest.fn(() => {
+        Storage.prototype.getItem = jest.fn(() => {
             return JSON.stringify([
                 { word: 'word' }
             ])
@@ -37,7 +37,7 @@ describe('App.ts', () => {
                 json: () => Promise.resolve([{ word: 'word' }]),
             })
         );
-        global.localStorage.getItem = jest.fn(() => null)
+        Storage.prototype.getItem = jest.fn(() => null)
         Object.assign(global, {
             chrome: {
                 runtime: {
