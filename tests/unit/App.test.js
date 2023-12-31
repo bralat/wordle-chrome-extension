@@ -57,7 +57,9 @@ describe('App.ts', () => {
     it('should update predictions when reset', () => {
         // Given
         document.body.innerHTML = mockView;
-        localStorage.setItem('words', JSON.stringify(mockDictionary));
+        Storage.prototype.getItem = jest.fn(() => {
+            return JSON.stringify(mockDictionary)
+        })
         const board = new Board({
             'board': '.Board-module_boardContainer__TBHNL',
             'row': '.Row-module_row__pwpBq',
@@ -76,7 +78,9 @@ describe('App.ts', () => {
 
     it('should use starter words if it\'s a new game', () => {
         document.body.innerHTML = mockView;
-        localStorage.setItem('words', JSON.stringify(mockDictionary));
+        Storage.prototype.getItem = jest.fn(() => {
+            return JSON.stringify(mockDictionary)
+        })
         const board = new Board({
             'board': '.Board-module_boardContainer__TBHNL',
             'row': '.Row-module_row__pwpBq',
