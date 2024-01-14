@@ -11,6 +11,7 @@ const buffer = require('vinyl-buffer');
 const rollup = require('@rollup/stream');
 const rollupTs = require('@rollup/plugin-typescript');
 const replace = require('gulp-replace');
+const connect = require('gulp-connect');
 
 const buildDest = 'build';
 const devDest = 'dev';
@@ -23,6 +24,10 @@ gulp.task('set-dest-build', (done) => {
 })
 gulp.task('set-dest-dev', (done) => {
   dest = devDest
+  done()
+})
+gulp.task('set-dest-test', (done) => {
+  dest = 'cypress/fixtures/homepage'
   done()
 })
 
@@ -38,7 +43,7 @@ gulp.task('serve-js', gulp.series(function() {
     .pipe(source('content.js'))
     .pipe(replace('${GTAG_ID}', env.GTAG_ID))
     .pipe(buffer())
-    .pipe(gulp.dest(devDest+'/scripts'))
+    .pipe(gulp.dest(dest+'/scripts'))
 }));
 gulp.task('build-js', gulp.series(function() {
   return rollup({
@@ -152,7 +157,21 @@ gulp.task('build', gulp.series([
   'build-js',
   'compress',
   'clean-build',
-]))
+]));
+// serves the wordle home page for cypress tests
+gulp.task('serve-home', function() {
+  connect.server({
+    name: 'Wordle Cypress Test',
+    root: './cypress/fixtures/homepage',
+    port: 8100,
+    livereload: true
+  });
+});
+gulp.task('serve-test', gulp.series([
+  'set-dest-test',
+  'serve-js',
+  'serve-home'
+]));
 
 // Setting the default function
 gulp.task('default', gulp.series(['set-dest-dev', 'clean', 'serve', 'watch']));
