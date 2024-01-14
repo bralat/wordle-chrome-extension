@@ -13,8 +13,10 @@
           "scripts/content.js"
         ],
         "matches": [
-          "https://www.nytimes.com/games/wordle/index.html"
-        ]
+          "https://www.nytimes.com/games/wordle/index.html",
+          "http://localhost:8100/*"
+        ],
+        "all_frames": true
       }
   ],
   "background": {
@@ -31,6 +33,9 @@
   },
   "web_accessible_resources": [{
     "resources": ["assets/words.json"],
-    "matches": ["https://www.nytimes.com/*"]
+    "matches": [
+      "https://www.nytimes.com/*",
+      "http://localhost:8100/*"
+    ]
   }]
 }
