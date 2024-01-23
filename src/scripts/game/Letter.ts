@@ -15,15 +15,17 @@ export default class Letter
   letter: string
   protected _state: LetterState
   protected _mode: InsertModeType
+  protected name: string
   statePosition: LetterInfo = {
     state: 'tbd',
     positions: []
   }
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLElement, name?: string) {
     this.element = element;
     this.statePosition.state = this.element.getAttribute('data-state') as LetterState;
     this.letter = this.element.getAttribute('data-key') as string;
+    this.name = name || this.letter;
   }
 
   isState(state: LetterState): Boolean {
@@ -63,7 +65,7 @@ export default class Letter
   onClick(fn: () => void) {
     // add event listener for physical keyboard trigger
     document.addEventListener('keyup', (event) => {
-      if (event.key === this.letter) {
+      if (event.key.toLowerCase() === this.name.toLowerCase()) {
         fn();
       }
     });
