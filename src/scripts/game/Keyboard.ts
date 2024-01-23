@@ -6,8 +6,8 @@ export default class Keyboard
   static BACKSPACE_KEY: Letter
   static ENTER_KEY: Letter
   static SPECIAL_KEYS: {[x: string]: string }  = {
-    '←': 'BACKSPACE_KEY',
-    '↵': 'ENTER_KEY'
+    '←': 'BACKSPACE',
+    '↵': 'ENTER'
   }
 
   static element: HTMLElement
@@ -30,7 +30,7 @@ export default class Keyboard
       if (Keyboard.alphabet.includes(letter.letter)) {
         Keyboard._letters.push(letter);
       } else if (specialKey = Keyboard.SPECIAL_KEYS[letter.letter]) {
-        Keyboard[specialKey] = new Letter(elem);
+        Keyboard[specialKey + '_KEY'] = new Letter(elem, specialKey);
       }
     })
   }
