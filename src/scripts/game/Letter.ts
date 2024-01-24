@@ -33,7 +33,7 @@ export default class Letter
   }
 
   get state(): LetterState {
-    return this.statePosition.state
+    return this.statePosition.state || 'tbd'
   }
 
   isPriorityLowerThan(state: LetterState) {
