@@ -64,7 +64,7 @@ export default class Column
     return this._letter
   }
 
-  set state(state: LetterState) { // TODO: create column state type
+  set state(state: LetterState) {
     this._state = state;
   }
 
