@@ -61,12 +61,6 @@ export default class Predictor
         if (!Predictor._dictionary) {
             Predictor._dictionary = JSON.parse(localStorage.getItem('words'));
         }
-        // Predictor._dictionary = [
-        //     {
-        //         word: 'about',
-        //         popularity: 1
-        //     }
-        // ]
 
         return Predictor._dictionary;
     }

@@ -30,7 +30,6 @@ describe('App', () => {
   it('attaches the extension to the first row when the game is new', () => {
     cy.get('.Row-module_row__pwpBq').then((rows) => {
       const rowBoundingClientRect: DOMRect = rows.get(0).getBoundingClientRect();
-      console.log(rowBoundingClientRect);
       cy.get('start-button')
         .should('have.css', 'left', `${rowBoundingClientRect.right + 10}px`)
         .should('have.css', 'top', `${rowBoundingClientRect.top + 5}px`);
@@ -91,7 +90,6 @@ describe('App', () => {
       cy.get('.Row-module_row__pwpBq').then((rows) => {
         const row = rows.get(0);
         expect(word).to.not.be.empty;
-        // console.log(row.textContent);
         expect(row.textContent).to.equal(word);
       });
     });
