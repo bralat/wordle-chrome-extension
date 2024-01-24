@@ -41,7 +41,7 @@ export default class App {
       const interval = setInterval(() => {
         if (this.isLoaded && Predictor.ready) {
           clearInterval(interval)
-          setTimeout(() => { // TODO: replace with listening for end of animation
+          setTimeout(() => {
             resolve(true);
           }, 2000)
         }
