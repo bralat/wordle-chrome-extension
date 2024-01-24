@@ -19,4 +19,11 @@ jobs:
       with:
         node-version: 18.x
         cache: 'npm'
-    - run: npm run test
+    - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+    - name: Test
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: test # will run `yarn build:prod` command
