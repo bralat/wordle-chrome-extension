@@ -101,4 +101,16 @@ describe('Game/Letter', () => {
         expect(documentSpy).toHaveBeenCalledWith('keyup', expect.any(Function));
         expect(elementSpy).toHaveBeenCalledWith('click', expect.any(Function));
     })
+
+    it('returns tbd if state is null', () => {
+        // Given
+        const letter = new Letter(element.firstElementChild);
+        letter.statePosition.state = null;
+
+        // When
+        const result = letter.state;
+
+        // Then
+        expect(result).toBe('tbd');
+    });
 });
