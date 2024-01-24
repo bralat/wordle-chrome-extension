@@ -77,8 +77,10 @@ export default class Column
     this._mode = state;
     if (state === 'hint') {
       this.element.style.opacity = '0.5';
+      this.element.style.color = "black";
     } else {
       this.element.style.opacity = '1';
+      this.element.style.removeProperty('color');
     }
   }
 
