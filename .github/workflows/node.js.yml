@@ -10,20 +10,18 @@ on:
     branches: [ "master" ]
 
 jobs:
-  test:
+  build:
+    name: Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js 18.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.x
-        cache: 'npm'
-    - name: Run install
-        uses: borales/actions-yarn@v4
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
         with:
-          cmd: install # will run `yarn install` command
-    - name: Test
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: test # will run `yarn build:prod` command
+          node-version: 18.x
+          cache: 'npm'
+      - name: Run install
+          uses: borales/actions-yarn@v4
+          with:
+            cmd: install # will run `yarn install` command
+      - run: npm run test
