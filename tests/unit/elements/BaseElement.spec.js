@@ -1,8 +1,8 @@
 import BaseElement from "@/scripts/elements/BaseElement"
 import { customElement } from "@/scripts/decorators";
-import DirectiveHandler from "@/scripts/Directives/DirectiveHandler"
+import DirectiveHandler from "@/scripts/directives/DirectiveHandler"
 
-jest.mock('@/scripts/Directives/DirectiveHandler')
+jest.mock('@/scripts/directives/DirectiveHandler')
 
 describe('Elements/BaseElement', () => {
     beforeAll(() => {

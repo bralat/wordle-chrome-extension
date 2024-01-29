@@ -1,4 +1,4 @@
-import Reactive from "@/scripts/Directives/Reactive"
+import Reactive from "@/scripts/directives/Reactive"
 
 describe('Directives/Reactive', () => {
     it('allows value to be set even if it has no side effect', () => {
