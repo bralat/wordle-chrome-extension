@@ -11,7 +11,6 @@ export default class App {
   protected readonly button: StartButtonElement
   protected readonly wordSelector: WordSelectorElement
   protected predictor: Predictor
-  protected static gTagLoaded: Boolean = true
   protected appTimeout: ReturnType<typeof setTimeout>
   protected board: Board
 
@@ -25,15 +24,6 @@ export default class App {
     // initialise predictor
     this.predictor = new Predictor()
     this.initExtension()
-  }
-
-  static loadGTag() {
-    window.dataLayer = window.dataLayer || [];
-
-    const gtag: VariableArgumentsType = () => window.dataLayer.push(arguments);
-    gtag('js', new Date());
-
-    gtag('config', `${window.GTAG_ID}`);
   }
 
   static ready(): Promise<{}> {
@@ -50,7 +40,7 @@ export default class App {
   }
 
   static get isLoaded () {
-    return document.querySelectorAll('div.Tile-module_tile__UWEHN').length > 0 && this.gTagLoaded;
+    return document.querySelectorAll('div.Tile-module_tile__UWEHN').length > 0;
   }
 
   initEventListeners() {
