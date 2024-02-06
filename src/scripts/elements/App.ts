@@ -4,6 +4,7 @@ import Board from "../game/Board"
 import Predictor from "../predictor/Predictor"
 import BaseElement from "./BaseElement"
 import { customElement } from "../decorators"
+import Keyboard from "../game/Keyboard"
 
 @customElement('wordle-predictor') 
 export default class App extends BaseElement
@@ -14,15 +15,17 @@ export default class App extends BaseElement
   protected appTimeout: ReturnType<typeof setTimeout>
   protected board: Board
 
-  constructor(board: Board) {
+  constructor() {
     super()
-    this.board = board
+
+    this.board = new Board();
     this.eventHandlers = {
       'click': this.clickHandler.bind(this),
-      'selected': this.selectedHandler,
-      'hinted': this.hintedHandler,
-      'clear': this.clearHandler,
+      'selected': this.selectedHandler.bind(this),
+      'hinted': this.hintedHandler.bind(this),
+      'clear': this.clearHandler.bind(this),
     }
+    App.getDictionary()
     this.render()
     this.button = this.shadow.querySelector('start-button') as StartButtonElement;
     this.wordSelector = this.shadow.querySelector('word-selector') as WordSelectorElement;
@@ -108,6 +111,11 @@ export default class App extends BaseElement
   }
 
   initExtension () {
+    // is game complete
+    if (this.board.isComplete()) {
+      return;
+    }
+  
     if (this.board.isEmpty) {
       // set starter words
       // source: https://www.gamespot.com/articles/wordle-best-starting-words-to-use-and-other-game-tips/1100-6499460/
@@ -120,6 +128,8 @@ export default class App extends BaseElement
   }
 
   connectedCallback() {
+    Keyboard.ENTER_KEY.onClick(() => this.reset())
+
     this.initExtension();
   }
 
@@ -148,8 +158,8 @@ export default class App extends BaseElement
 
   get view(): string {
     return `
-      <div class="app">
-        <start-button data-subscribe="eventHandlers"></start-button>
+      <div class="app" data-subscribe="eventHandlers">
+        <start-button></start-button>
         <word-selector></word-selector>
       </div>
     `
