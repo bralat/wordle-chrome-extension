@@ -3,10 +3,9 @@ import WordSelectorElement from "./WordSelectorElement"
 import Board from "../game/Board"
 import Predictor from "../predictor/Predictor"
 import BaseElement from "./BaseElement"
-import { customElement } from "../decorators"
 import Keyboard from "../game/Keyboard"
 
-@customElement('wordle-predictor') 
+
 export default class App extends BaseElement
 {
   protected readonly button: StartButtonElement
@@ -88,8 +87,6 @@ export default class App extends BaseElement
   reset() {
     clearTimeout(this.appTimeout);
     this.appTimeout = setTimeout(() => {
-      this.hide()
-
       if (this.board.isComplete()) {
         clearTimeout(this.appTimeout);
         return;
@@ -125,12 +122,16 @@ export default class App extends BaseElement
     }
 
     this.attachToEmptyRow()
+    this.show();
   }
 
   connectedCallback() {
     Keyboard.ENTER_KEY.onClick(() => this.reset())
-
-    this.initExtension();
+    
+    this.hide();
+    setTimeout(() => {
+      this.initExtension();
+    }, 350);
   }
 
   get css(): string {
