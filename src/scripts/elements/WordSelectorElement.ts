@@ -1,9 +1,7 @@
-import { customElement } from "../decorators";
 import Reactive from "../directives/Reactive";
 import { PredictedWordInterface } from "../types/PredictedWordsInterface";
 import BaseElement from './BaseElement';
 
-@customElement('word-selector')
 class WordSelectorElement extends BaseElement
 {
   _words: Reactive<PredictedWordInterface[]>
