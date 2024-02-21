@@ -1,24 +1,24 @@
-import App from "@/scripts/Elements/App";
+import AppElement from "@/scripts/Elements/AppElement";
 import Board from '@/scripts/game/Board';
 import WordSelectorElement from '@/scripts/Elements/WordSelectorElement';
 import StarterButtonElement from '@/scripts/Elements/StartButtonElement';
-import mockView from '../fixtures/mockNewGame.js';
-import mockDictionary from '../fixtures/mockDictionary';
+import mockView from '../../fixtures/mockNewGame.js';
+import mockDictionary from '../../fixtures/mockDictionary.js';
 import Predictor from '@/scripts/predictor/Predictor';
 import { customElement } from "@/scripts/decorators";
 
-describe('App.ts', () => {
+describe('Elements/AppElement.ts', () => {
     beforeAll(() => {
         document.body.innerHTML = mockView;
         jest.useFakeTimers();
-        customElement('word-predictor')(App);
+        customElement('word-predictor')(AppElement);
         customElement('word-selector')(WordSelectorElement);
         customElement('start-button')(StarterButtonElement);
     });
 
     it('should update predictions when reset', () => {
         // Given
-        const app = new App();
+        const app = new AppElement();
         const runPredictionSpy = jest.spyOn(app, 'runPrediction').mockImplementation(() => { });
         const attachToEmptyRowSpy = jest.spyOn(app, 'attachToEmptyRow').mockImplementation(() => { });
 
@@ -33,7 +33,7 @@ describe('App.ts', () => {
 
     it('should use starter words if it\'s a new game', () => {
         // Given
-        const app = new App();
+        const app = new AppElement();
         const runPredictionSpy = jest.spyOn(app, 'runPrediction').mockImplementation(() => { });
         const attachToEmptyRowSpy = jest.spyOn(app, 'attachToEmptyRow').mockImplementation(() => { });
         const showSpy = jest.spyOn(app, 'show').mockImplementation(() => { });
@@ -53,7 +53,7 @@ describe('App.ts', () => {
     it('should run prediction if it\'s not a new game', () => {
         // Given
         localStorage.setItem('words', JSON.stringify(mockDictionary));
-        const app = new App();
+        const app = new AppElement();
         jest.spyOn(Board.prototype, 'isEmpty', 'get').mockReturnValue(false);
         const runPredictionSpy = jest.spyOn(app, 'runPrediction');
 

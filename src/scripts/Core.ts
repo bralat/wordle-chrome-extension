@@ -1,5 +1,5 @@
 import Predictor from "./predictor/Predictor";
-import App from "./elements/App";
+import App from "./elements/AppElement";
 
 export default class Core {
   public static init() {

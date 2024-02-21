@@ -7,7 +7,7 @@ const mockApp = {
         bind: jest.fn().mockImplementation(() => mockBind)
     }
 }
-jest.mock('@/scripts/Elements/App',  () => {
+jest.mock('@/scripts/Elements/AppElement',  () => {
     return {
         default: jest.fn().mockImplementation(() => mockApp),
     };

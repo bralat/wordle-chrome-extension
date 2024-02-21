@@ -1,4 +1,4 @@
-import App from "./elements/App";
+import App from "./elements/AppElement";
 import StartButtonElement from "./elements/StartButtonElement";
 import WordSelectorElement from "./elements/WordSelectorElement";
 import Core from "./Core";
