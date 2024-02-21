@@ -1,119 +1,65 @@
-import App from "@/scripts/App";
+import App from "@/scripts/Elements/App";
 import Board from '@/scripts/game/Board';
+import WordSelectorElement from '@/scripts/Elements/WordSelectorElement';
+import StarterButtonElement from '@/scripts/Elements/StartButtonElement';
 import mockView from '../fixtures/mockNewGame.js';
 import mockDictionary from '../fixtures/mockDictionary';
 import Predictor from '@/scripts/predictor/Predictor';
+import { customElement } from "@/scripts/decorators";
 
 describe('App.ts', () => {
     beforeAll(() => {
+        document.body.innerHTML = mockView;
         jest.useFakeTimers();
+        customElement('word-predictor')(App);
+        customElement('word-selector')(WordSelectorElement);
+        customElement('start-button')(StarterButtonElement);
     });
-
-    it('should get dictionary from storage if already loaded', () => {
-        // Given
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                json: () => Promise.resolve([{ word: 'word' }]),
-            })
-        );
-        Storage.prototype.getItem = jest.fn(() => {
-            return JSON.stringify([
-                { word: 'word' }
-            ])
-        })
-
-        // When
-        App.getDictionary()
-
-        // Then
-        // assert no http request was made
-        expect(global.fetch).not.toHaveBeenCalled()
-    });
-
-    it('should get dictionary via http request', () => {
-        // Given
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                json: () => Promise.resolve([{ word: 'word' }]),
-            })
-        );
-        Storage.prototype.getItem = jest.fn(() => null)
-        Object.assign(global, {
-            chrome: {
-                runtime: {
-                    getURL: (path) => 'home/' + path
-                }
-            }
-        })
-
-        // When
-        App.getDictionary()
-
-        // Then
-        // assert no http request was made
-        expect(global.fetch).toHaveBeenCalled()
-    })
 
     it('should update predictions when reset', () => {
         // Given
-        document.body.innerHTML = mockView;
-        Storage.prototype.getItem = jest.fn(() => {
-            return JSON.stringify(mockDictionary)
-        })
-        const board = new Board({
-            'board': '.Board-module_boardContainer__TBHNL',
-            'row': '.Row-module_row__pwpBq',
-            'column': 'div.Tile-module_tile__UWEHN'
-        });
-        const app = new App(board);
-        const currentWords = app.wordSelector._words.value;
+        const app = new App();
+        const runPredictionSpy = jest.spyOn(app, 'runPrediction').mockImplementation(() => { });
+        const attachToEmptyRowSpy = jest.spyOn(app, 'attachToEmptyRow').mockImplementation(() => { });
 
         // When
         app.reset()
-        jest.advanceTimersByTime(3000)
+        jest.runAllTimers();
 
         // Then
-        expect(app.wordSelector._words.value).not.toBe(currentWords);
+        expect(runPredictionSpy).toHaveBeenCalled();
+        expect(attachToEmptyRowSpy).toHaveBeenCalled();
     })
 
     it('should use starter words if it\'s a new game', () => {
         // Given
-        document.body.innerHTML = mockView;
-        Storage.prototype.getItem = jest.fn(() => {
-            return JSON.stringify(mockDictionary)
-        })
-        const board = new Board({
-            'board': '.Board-module_boardContainer__TBHNL',
-            'row': '.Row-module_row__pwpBq',
-            'column': 'div.Tile-module_tile__UWEHN'
-        });
-        const app = new App(board);
+        const app = new App();
+        const runPredictionSpy = jest.spyOn(app, 'runPrediction').mockImplementation(() => { });
+        const attachToEmptyRowSpy = jest.spyOn(app, 'attachToEmptyRow').mockImplementation(() => { });
+        const showSpy = jest.spyOn(app, 'show').mockImplementation(() => { });
 
         // When
         app.initExtension()
-        jest.advanceTimersByTime(3000)
+        jest.runAllTimers();
 
         // Then
         expect(app.wordSelector._words.value).toBe(Predictor.starterWords);
+        expect(runPredictionSpy).not.toHaveBeenCalled();
+        expect(attachToEmptyRowSpy).toHaveBeenCalled();
+        expect(showSpy).toHaveBeenCalled();
     })
 
 
     it('should run prediction if it\'s not a new game', () => {
         // Given
-        document.body.innerHTML = mockView;
         localStorage.setItem('words', JSON.stringify(mockDictionary));
-        const board = new Board({
-            'board': '.Board-module_boardContainer__TBHNL',
-            'row': '.Row-module_row__pwpBq',
-            'column': 'div.Tile-module_tile__UWEHN'
-        });
-        const app = new App(board);
+        const app = new App();
         jest.spyOn(Board.prototype, 'isEmpty', 'get').mockReturnValue(false);
         const runPredictionSpy = jest.spyOn(app, 'runPrediction');
 
         // When
         app.initExtension()
-        jest.advanceTimersByTime(3000)
+        jest.runAllTimers();
 
         // Then
         expect(runPredictionSpy).toHaveBeenCalled();

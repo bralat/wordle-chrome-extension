@@ -6,6 +6,7 @@ jest.mock('@/scripts/directives/DirectiveHandler')
 
 describe('Elements/BaseElement', () => {
     beforeAll(() => {
+        jest.useFakeTimers();
         customElement('base-element')(BaseElement);
     });
 
@@ -151,6 +152,7 @@ describe('Elements/BaseElement', () => {
 
         // When
         element.hide();
+        jest.runAllTimers();
 
         // Then
         expect(element.style.display).toBe('none');

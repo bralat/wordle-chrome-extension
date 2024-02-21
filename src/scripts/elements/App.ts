@@ -24,31 +24,14 @@ export default class App extends BaseElement
       'hinted': this.hintedHandler.bind(this),
       'clear': this.clearHandler.bind(this),
     }
-    App.getDictionary()
+
     this.render()
     this.button = this.shadow.querySelector('start-button') as StartButtonElement;
     this.wordSelector = this.shadow.querySelector('word-selector') as WordSelectorElement;
-    this.wordSelector.hide();   
+    this.wordSelector.hide(); 
 
     // initialise predictor
     this.predictor = new Predictor()
-  }
-
-  static ready(): Promise<{}> {
-    return new Promise((resolve) => {
-      const interval = setInterval(() => {
-        if (this.isLoaded && Predictor.ready) {
-          clearInterval(interval)
-          setTimeout(() => {
-            resolve(true);
-          }, 2000)
-        }
-      }, 300);
-    })
-  }
-
-  static get isLoaded () {
-    return document.querySelectorAll('div.Tile-module_tile__UWEHN').length > 0;
   }
 
   clickHandler(e: Event) {
@@ -97,16 +80,6 @@ export default class App extends BaseElement
     }, 3000)
   }
 
-  static async getDictionary() {
-    // check local storage
-    const words = localStorage.getItem('words')
-    if (!words) {
-      const response = await fetch(chrome.runtime.getURL('assets/words.json'));
-      const json = await response.json();
-      localStorage.setItem('words', JSON.stringify(json))
-    }
-  }
-
   initExtension () {
     // is game complete
     if (this.board.isComplete()) {
@@ -127,7 +100,7 @@ export default class App extends BaseElement
 
   connectedCallback() {
     Keyboard.ENTER_KEY.onClick(() => this.reset())
-    
+
     this.hide();
     setTimeout(() => {
       this.initExtension();
