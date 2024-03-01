@@ -1,18 +1,12 @@
-import Board from "./game/Board";
-import App from "./App";
-import Keyboard from "./game/Keyboard";
+import AppElement from "./elements/AppElement";
+import StartButtonElement from "./elements/StartButtonElement";
+import WordSelectorElement from "./elements/WordSelectorElement";
+import Core from "./Core";
 
-App.getDictionary()
-// App.loadGTag()
-App.ready().then(() => {
-  const board = new Board();
+// register custom elements
+customElements.define('start-button', StartButtonElement);
+customElements.define('word-selector', WordSelectorElement);
+customElements.define('wordle-predictor', AppElement) 
 
-  // is game complete
-  if (board.isComplete()) {
-    return;
-  }
-
-  const app: App = new App(board);
-
-  Keyboard.ENTER_KEY.onClick(() => app.reset())
-})
+// initialise app
+Core.init();

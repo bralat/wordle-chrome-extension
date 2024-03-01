@@ -60,14 +60,21 @@ export default class BaseElement extends HTMLElement
 
   hide () {
     // set display of custom element to none
-    this.style.display = 'none';
+    this.style.opacity = '0';
+    setTimeout(() => {
+      this.style.display = 'none';
+    }, 300);
   }
 
   show () {
     this.style.display = null;
+    setTimeout(() => {
+      this.style.opacity = '1';
+    }, 100);
+    
   }
 
   toggleDisplay() {
-    this.style.display = this.isVisible ? 'none' : null;
+    this.isVisible ? this.hide() : this.show();
   }
 }

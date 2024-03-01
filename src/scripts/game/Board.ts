@@ -39,18 +39,18 @@ export default class Board {
     return this.rows.every((row: Row): Boolean => row?.is('empty')) as Boolean;
   }
 
-  appendToRow(row: Row, element: BaseElement, offset: number) {
+  appendToRow(row: Row, element: BaseElement) {
     // get the position
     const boundRect: DOMRect = row.element.getBoundingClientRect()
     // append button to row
     element.style.position = 'absolute';
     element.style.top = `${boundRect.top + 5}px`;
-    element.style.left = `${boundRect.right + offset}px`;
+    element.style.left = `${boundRect.right + 10}px`;
 
     document.body.appendChild(element);
   }
 
-  appendToEmptyRow(element: BaseElement, offset: number) {
-    this.appendToRow(this.nextRow, element, offset);
+  appendToEmptyRow(element: BaseElement) {
+    this.appendToRow(this.nextRow, element);
   }
 }
