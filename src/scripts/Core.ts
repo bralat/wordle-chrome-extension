@@ -1,5 +1,5 @@
 import Predictor from "./predictor/Predictor";
-import App from "./elements/AppElement";
+import AppElement from "./elements/AppElement";
 
 export default class Core {
   public static init() {
@@ -8,7 +8,7 @@ export default class Core {
   }
 
   static setup() {
-    const appElement = new App();
+    const appElement = new AppElement();
     document.body.appendChild(appElement)
 
     // create global css

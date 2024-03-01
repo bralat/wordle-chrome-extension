@@ -6,7 +6,7 @@ import BaseElement from "./BaseElement"
 import Keyboard from "../game/Keyboard"
 
 
-export default class App extends BaseElement
+export default class AppElement extends BaseElement
 {
   protected readonly button: StartButtonElement
   protected readonly wordSelector: WordSelectorElement
